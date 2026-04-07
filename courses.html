@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2300E5FF'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='900' fill='%23000'%3EN%3C/text%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src https://dqjzvembtenfhtgpttie.supabase.co wss://dqjzvembtenfhtgpttie.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="robots" content="index, follow">
+    <title>NEUBLOCK &bull; Free Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+    <script>
+        (function(){var t=localStorage.getItem('nb_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();
+        const{createClient}=window.supabase;
+        const sb=createClient('https://dqjzvembtenfhtgpttie.supabase.co','sb_publishable_LldCCFUKJShZ3ItHs5Uagw_yzIFflqd');
+    </script>
+    <style>
+        :root{--bg:#050712;--surface:#0f1220;--card:#141a2a;--card2:#16212f;--border:rgba(34,150,206,0.4);--bdim:rgba(34,150,206,0.15);--cyan:#22d1ff;--blue:#4ea8ff;--green:#2dd5a6;--red:#f7768e;--gold:#fbbf24;--purple:#a78bfa;--text:#e5f1ff;--muted:#91a8c0;--r:16px;--t:all 0.22s ease;}
+        [data-theme=light]{--bg:#f0f4ff;--surface:#e8eef8;--card:#ffffff;--card2:#f8fafc;--border:rgba(30,144,255,0.2);--bdim:rgba(30,144,255,0.08);--cyan:#0284c7;--blue:#2563eb;--green:#10b981;--red:#ef4444;--gold:#f59e0b;--purple:#7c3aed;--text:#0f172a;--muted:#64748b;}
+        [data-theme=light] .glass-nav{background:rgba(8,12,20,0.95)!important;}[data-theme=light] footer{background:#101725;}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}html{scroll-behavior:smooth;}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh;}
+        ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:99px;}
+        a,button,[role=button]{outline:none;user-select:none;text-decoration:none;}
+        .glass-nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:.9rem 5%;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:all var(--t);border-bottom:1px solid transparent;}
+        .glass-nav.stuck{background:rgba(10,10,10,.96);border-bottom-color:var(--border);padding:.65rem 5%;backdrop-filter:blur(14px);}
+        .nav-logo{font-size:1.35rem;font-weight:800;color:var(--cyan);letter-spacing:-.02em;}
+        .nav-links{display:flex;gap:1.8rem;list-style:none;}.nav-links a{color:var(--muted);font-size:.88rem;font-weight:600;transition:color var(--t);}.nav-links a:hover,.nav-links a[aria-current]{color:var(--cyan);}
+        .nav-end{display:flex;align-items:center;gap:.5rem;}
+        .icon-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(34,209,255,0.08),transparent);border:1.5px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem;transition:all var(--t);flex-shrink:0;}
+        .icon-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 4px 12px rgba(34,209,255,0.2);}
+        .ham-btn{display:none;}
+        @media(max-width:768px){.ham-btn{display:flex;}.nav-links{display:none;flex-direction:column;gap:0;position:fixed;top:60px;left:0;right:0;background:rgba(8,10,20,.99);border-bottom:1px solid var(--border);padding:.5rem 0;z-index:997;}.nav-links.open{display:flex;}.nav-links li{padding:.8rem 5%;border-bottom:1px solid rgba(34,209,255,.07);}}
+        .wide-wrap{max-width:1300px;margin:0 auto;padding:6rem 5% 4rem;position:relative;z-index:1;}
+        .back-link{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:2rem;color:var(--muted);border:1.5px solid var(--border);padding:.5rem 1.2rem;border-radius:99px;transition:all var(--t);font-size:.84rem;font-weight:600;}
+        .back-link:hover{border-color:rgba(34,209,255,.6);color:var(--cyan);background:rgba(34,209,255,.05);transform:translateX(-4px);}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+        .page-head{text-align:center;margin-bottom:2.5rem;animation:fadeUp .55s ease both;}
+        .page-badge{display:inline-flex;align-items:center;gap:.45rem;color:var(--purple);font-size:.75rem;font-weight:700;border:1px solid rgba(167,139,250,.2);background:rgba(167,139,250,.07);padding:.35rem .9rem;border-radius:99px;margin-bottom:1rem;letter-spacing:.06em;}
+        .bdot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pd 2s ease infinite;}
+        @keyframes pd{0%,100%{opacity:1}50%{opacity:.2}}
+        .page-head h1{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:800;background:linear-gradient(135deg,var(--text),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.025em;margin-bottom:.5rem;}
+        .page-head p{color:var(--muted);font-size:.93rem;line-height:1.75;max-width:540px;margin:0 auto;}
+        .page-bar{width:48px;height:4px;background:linear-gradient(90deg,var(--purple),#c4b5fd,var(--purple));border-radius:99px;margin:.8rem auto 0;box-shadow:0 0 14px rgba(167,139,250,.45);}
+        .stats-row{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;animation:fadeUp .55s .1s ease both;}
+        .stat-chip{display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--card),var(--card2));border:1.5px solid var(--border);border-radius:99px;padding:.45rem 1.1rem;font-size:.82rem;font-weight:700;color:var(--muted);transition:all var(--t);}
+        .stat-chip:hover{border-color:var(--purple);color:var(--text);}
+        .stat-chip i{color:var(--purple);font-size:.8rem;}.stat-chip strong{color:var(--text);}
+        .filter-row{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;animation:fadeUp .55s .15s ease both;}
+        .filter-btn{padding:.5rem 1.2rem;background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:99px;cursor:pointer;transition:all var(--t);font-size:.84rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;}
+        .filter-btn.active{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border-color:var(--purple);box-shadow:0 4px 14px rgba(167,139,250,.3);}
+        .filter-btn:hover:not(.active){border-color:var(--purple);color:var(--purple);background:rgba(167,139,250,.06);transform:translateY(-2px);}
+        .search-box{position:relative;max-width:500px;margin:0 auto 2rem;animation:fadeUp .55s .2s ease both;}
+        .search-box .si{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.84rem;pointer-events:none;}
+        .search-input{width:100%;padding:.85rem 1.2rem .85rem 2.85rem;background:linear-gradient(135deg,rgba(167,139,250,.04),var(--card));border:1.5px solid var(--border);border-radius:99px;color:var(--text);font-size:.9rem;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;transition:all var(--t);}
+        .search-input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(167,139,250,.1),0 0 18px rgba(167,139,250,.12);}
+        .search-input::placeholder{color:var(--muted);}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--card2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;}
+        .skel-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;}
+        .skel-img{height:190px;}.skel-body{padding:1.2rem;display:flex;flex-direction:column;gap:.65rem;}.skel-line{height:13px;border-radius:6px;}
+        .courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.4rem;}
+        @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+        .course-card{background:linear-gradient(160deg,var(--card),var(--card2));border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .28s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;position:relative;animation:cardIn .5s ease both;}
+        .course-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(167,139,250,.06),transparent);opacity:0;transition:opacity var(--t);pointer-events:none;}
+        .course-card:hover::after{opacity:1;}
+        .course-card:hover{border-color:rgba(167,139,250,.6);transform:translateY(-7px);box-shadow:0 20px 45px rgba(167,139,250,.14);}
+        .card-thumb{height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+        .card-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
+        .course-card:hover .card-thumb img{transform:scale(1.09);}
+        .thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--card) 100%);pointer-events:none;z-index:1;}
+        .thumb-icon{font-size:3rem;transition:all var(--t);}
+        .course-card:hover .thumb-icon{transform:scale(1.2);}
+        .cat-arduino .thumb-icon{color:rgba(34,209,255,.25);}
+        .cat-robotics .thumb-icon{color:rgba(78,168,255,.25);}
+        .cat-ai .thumb-icon{color:rgba(167,139,250,.25);}
+        .cat-python .thumb-icon{color:rgba(74,222,128,.25);}
+        .course-card:hover .cat-arduino .thumb-icon,.course-card:hover .cat-arduino{--c:var(--cyan);}
+        .free-badge{position:absolute;top:.7rem;right:.7rem;padding:.25rem .75rem;border-radius:99px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;background:rgba(45,213,166,.18);color:var(--green);border:1px solid rgba(45,213,166,.35);backdrop-filter:blur(8px);}
+        .paid-badge{position:absolute;top:.7rem;right:.7rem;padding:.25rem .75rem;border-radius:99px;font-size:.68rem;font-weight:800;z-index:2;background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3);backdrop-filter:blur(8px);}
+        .card-body{padding:1.2rem;flex:1;display:flex;flex-direction:column;gap:.45rem;}
+        .card-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;}
+        .cat-tag{padding:.2rem .65rem;border-radius:99px;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
+        .cat-tag.arduino{background:rgba(34,209,255,.12);color:var(--cyan);border:1px solid rgba(34,209,255,.25);}
+        .cat-tag.robotics{background:rgba(78,168,255,.12);color:var(--blue);border:1px solid rgba(78,168,255,.25);}
+        .cat-tag.ai{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
+        .cat-tag.python{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.25);}
+        .level-tag{font-size:.72rem;color:var(--muted);font-weight:600;}
+        .card-body h3{font-size:.97rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .card-body p{color:var(--muted);font-size:.83rem;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
+        .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.7rem;padding-top:.6rem;border-top:1px solid rgba(167,139,250,.08);}
+        .lessons-count{font-size:.75rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:.3rem;}
+        .start-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .9rem;background:linear-gradient(135deg,rgba(167,139,250,.12),rgba(167,139,250,.05));border:1px solid rgba(167,139,250,.25);border-radius:99px;color:var(--purple);font-size:.75rem;font-weight:700;transition:all var(--t);}
+        .course-card:hover .start-btn{background:rgba(167,139,250,.2);border-color:var(--purple);box-shadow:0 3px 10px rgba(167,139,250,.2);}
+        .empty{text-align:center;padding:3.5rem 2rem;color:var(--muted);background:linear-gradient(135deg,var(--card),var(--card2));border-radius:var(--r);border:1.5px solid var(--border);grid-column:1/-1;}
+        .empty i{font-size:2.8rem;display:block;margin-bottom:1rem;color:rgba(167,139,250,.2);}
+        footer{background:var(--surface);border-top:1px solid var(--border);padding:2.8rem 5% 1.5rem;position:relative;z-index:1;}
+        .f-inner{max-width:1300px;margin:0 auto;}.f-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem;}
+        @media(max-width:900px){.f-grid{grid-template-columns:1fr 1fr;}}@media(max-width:480px){.f-grid{grid-template-columns:1fr;}.courses-grid{grid-template-columns:1fr!important;}}
+        .f-logo{font-size:1.3rem;font-weight:800;color:var(--cyan);letter-spacing:-.02em;margin-bottom:.6rem;}.f-desc{color:var(--muted);font-size:.84rem;line-height:1.7;max-width:240px;}
+        .f-col h5{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text);margin-bottom:.9rem;}.f-col a{display:block;color:var(--muted);font-size:.84rem;margin-bottom:.42rem;transition:color var(--t);}.f-col a:hover{color:var(--cyan);}
+        .f-bottom{border-top:1px solid var(--border);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}.f-bottom p{color:var(--muted);font-size:.79rem;}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+    </style>
+</head>
+<body>
+<nav class="glass-nav" id="mainNav">
+    <a href="index.html" class="nav-logo" aria-label="NEUBLOCK home">NEUBLOCK</a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="circuit.html">Circuits</a></li>
+        <li><a href="component.html">Components</a></li>
+        <li><a href="courses.html" aria-current="page">Courses</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-end">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
+        <button class="ham-btn icon-btn" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><i class="fas fa-bars"></i></button>
+    </div>
+</nav>
+<div class="wide-wrap">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to NEUBLOCK</a>
+    <div class="page-head">
+        <div class="page-badge"><span class="bdot"></span> FREE LEARNING</div>
+        <h1>Free AI &amp; Robotics Courses</h1>
+        <p>Structured lessons, hands-on projects and video tutorials — completely free for makers worldwide</p>
+        <div class="page-bar"></div>
+    </div>
+    <div class="stats-row" id="statsRow">
+        <div class="stat-chip"><i class="fas fa-graduation-cap"></i><strong id="totalCourses">—</strong> Courses</div>
+        <div class="stat-chip"><i class="fas fa-gift"></i><strong id="freeCourses">—</strong> Free</div>
+        <div class="stat-chip"><i class="fas fa-list-ul"></i><strong id="totalLessons">—</strong> Lessons</div>
+    </div>
+    <div class="filter-row" id="filterRow">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-th" style="font-size:.78rem"></i> All</button>
+        <button class="filter-btn" data-filter="arduino"><i class="fas fa-microchip" style="font-size:.78rem"></i> Arduino</button>
+        <button class="filter-btn" data-filter="robotics"><i class="fas fa-robot" style="font-size:.78rem"></i> Robotics</button>
+        <button class="filter-btn" data-filter="ai"><i class="fas fa-brain" style="font-size:.78rem"></i> AI &amp; ML</button>
+        <button class="filter-btn" data-filter="python"><i class="fas fa-code" style="font-size:.78rem"></i> Python</button>
+    </div>
+    <div class="search-box">
+        <i class="fas fa-search si"></i>
+        <input type="text" id="si" class="search-input" placeholder="Search courses by title, category..." maxlength="100" autocomplete="off" spellcheck="false" aria-label="Search courses">
+    </div>
+    <div id="coursesGrid" class="courses-grid" aria-live="polite">
+        <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:60%"></div></div></div>
+        <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:65%"></div></div></div>
+        <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:55%"></div></div></div>
+    </div>
+</div>
+<footer>
+<div class="f-inner">
+    <div class="f-grid">
+        <div><div class="f-logo">NEUBLOCK</div><p class="f-desc">Open-source robotics studio — projects, circuits, components and free AI courses for makers worldwide.</p></div>
+        <div class="f-col"><h5>Resources</h5><a href="index.html#projects">Projects</a><a href="circuit.html">Circuits</a><a href="component.html">Components</a></div>
+        <div class="f-col"><h5>Learn</h5><a href="courses.html">All Courses</a><a href="courses.html">Arduino</a><a href="courses.html">Robotics</a><a href="courses.html">AI &amp; ML</a></div>
+        <div class="f-col"><h5>Connect</h5><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a><a href="index.html#contact">Contact</a></div>
+    </div>
+    <div class="f-bottom"><p>&copy; <span data-year></span> NEUBLOCK &bull; Robotics Studio</p><p>Made for the maker community &#10084;&#65039;</p></div>
+</div>
+</footer>
+<script src="bg-anim.js"></script>
+<script>
+function esc(u){if(u==null)return'';return String(u).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
+function safeUrl(u){if(!u)return'';try{var p=new URL(String(u).trim());return(p.protocol==='http:'||p.protocol==='https:')?p.href:'';}catch(e){return'';}}
+(function(){var t=localStorage.getItem('nb_theme')||'dark';document.documentElement.setAttribute('data-theme',t);var ic=document.getElementById('themeIcon');if(ic)ic.className=t==='dark'?'fas fa-moon':'fas fa-sun';})();
+document.getElementById('themeToggle').addEventListener('click',function(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('nb_theme',n);document.getElementById('themeIcon').className=n==='dark'?'fas fa-moon':'fas fa-sun';});
+window.addEventListener('scroll',function(){document.getElementById('mainNav').classList.toggle('stuck',window.scrollY>40);},{passive:true});
+var hamburger=document.getElementById('hamburger'),navLinks=document.getElementById('navLinks');
+hamburger.addEventListener('click',function(){var o=navLinks.classList.toggle('open');hamburger.setAttribute('aria-expanded',String(o));});
+document.addEventListener('click',function(e){if(!e.target.closest('nav')&&navLinks.classList.contains('open')){navLinks.classList.remove('open');hamburger.setAttribute('aria-expanded','false');}});
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){navLinks.classList.remove('open');hamburger.setAttribute('aria-expanded','false');});});
+var catIcons={arduino:'fa-microchip',robotics:'fa-robot',ai:'fa-brain',python:'fa-code'};
+var allCourses=[],currentFilter='all',searchQ='';
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+async function loadCourses(){
+    try{
+        var res=await sb.from('courses').select('id,title,description,category,level,is_free,price,thumbnail,lessons');
+        if(res.error)throw res.error;
+        allCourses=shuffle(res.data||[]);
+        document.getElementById('totalCourses').textContent=allCourses.length;
+        document.getElementById('freeCourses').textContent=allCourses.filter(function(c){return c.is_free;}).length;
+        document.getElementById('totalLessons').textContent=allCourses.reduce(function(s,c){return s+(Array.isArray(c.lessons)?c.lessons.length:0);},0);
+        renderCourses();
+    }catch(err){
+        document.getElementById('coursesGrid').innerHTML='<div class="empty" style="grid-column:1/-1"><i class="fas fa-exclamation-circle"></i>Unable to load courses.<br><button onclick="loadCourses()" style="background:var(--purple);color:#fff;border:none;border-radius:99px;padding:.4rem 1.2rem;font-weight:700;cursor:pointer;margin-top:.8rem;display:inline-block;">Retry</button></div>';
+    }
+}
+function renderCourses(){
+    var grid=document.getElementById('coursesGrid');var q=searchQ.toLowerCase().trim();
+    var fl=allCourses;
+    if(currentFilter!=='all')fl=fl.filter(function(c){return c.category===currentFilter;});
+    if(q)fl=fl.filter(function(c){return(c.title||'').toLowerCase().includes(q)||(c.description||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q);});
+    if(!fl.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><i class="fas fa-search"></i>'+(q?'No courses found for &ldquo;'+esc(searchQ)+'&rdquo;':'No courses added yet. Check back soon!')+'</div>';return;}
+    grid.innerHTML=fl.map(function(c,i){
+        var id=esc(c.id),title=esc(c.title),desc=c.description?esc(c.description):'';
+        var cat=esc(c.category||'arduino'),level=esc(c.level||'Beginner');
+        var imgSrc=safeUrl(c.thumbnail);var lessonCount=Array.isArray(c.lessons)?c.lessons.length:0;
+        var icon=catIcons[c.category]||'fa-book';var colorClass=c.category||'arduino';
+        var badge=c.is_free?'<span class="free-badge">FREE</span>':'<span class="paid-badge">&#x20b9;'+esc(String(c.price||'299'))+'</span>';
+        return'<a href="coursepage.html?id='+encodeURIComponent(id)+'" class="course-card" aria-label="'+title+' — '+level+' '+cat+'" style="animation-delay:'+(i*.07)+'s">'+
+            '<div class="card-thumb cat-'+colorClass+'">'+
+            (imgSrc?'<img src="'+esc(imgSrc)+'" alt="'+title+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+            '<div class="thumb-overlay"></div>'+
+            '<i class="fas '+icon+' thumb-icon" aria-hidden="true"'+(imgSrc?' style="display:none"':'')+' ></i>'+
+            badge+'</div>'+
+            '<div class="card-body">'+
+            '<div class="card-meta"><span class="cat-tag '+colorClass+'">'+cat.toUpperCase()+'</span><span class="level-tag">'+level+'</span></div>'+
+            '<h3>'+title+'</h3><p>'+desc+'</p>'+
+            '<div class="card-footer"><span class="lessons-count"><i class="fas fa-list-ul" aria-hidden="true"></i>'+lessonCount+' Lessons</span>'+
+            '<span class="start-btn">Start <i class="fas fa-arrow-right" aria-hidden="true"></i></span></div>'+
+            '</div></a>';
+    }).join('');
+}
+document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+        document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');b.removeAttribute('aria-current');});
+        btn.classList.add('active');btn.setAttribute('aria-current','true');currentFilter=btn.dataset.filter;renderCourses();
+    });
+});
+document.getElementById('si').addEventListener('input',function(e){searchQ=e.target.value.substring(0,100);renderCourses();});
+loadCourses();
+document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});
+</script>
+</body>
+</html>

@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2300E5FF'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='900' fill='%23000'%3EN%3C/text%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src https://dqjzvembtenfhtgpttie.supabase.co wss://dqjzvembtenfhtgpttie.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>NEUBLOCK — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+    <script>
+        // Apply theme before paint
+        (function () {
+            var t = localStorage.getItem('nb_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+        const { createClient } = window.supabase;
+        const sb = createClient('https://dqjzvembtenfhtgpttie.supabase.co', 'sb_publishable_LldCCFUKJShZ3ItHs5Uagw_yzIFflqd');
+    </script>
+    <style>
+        /* ── TOKENS ──────────────────────────────────── */
+        :root { 
+            --bg:#050712; --surface:#0f1220; --card:#141a2a; --card2:#16212f; 
+            --border:rgba(34,150,206,0.4); --bdim:rgba(34,150,206,0.15); 
+            --cyan:#22d1ff; --blue:#4ea8ff; --green:#2dd5a6; --red:#f7768e; --gold:#fbbf24; 
+            --text:#e5f1ff; --muted:#91a8c0; --rdim:rgba(248,113,113,0.08);
+            --r:16px; --t:all 0.22s ease; --shadow:0 10px 30px rgba(0,0,0,0.3);
+        }
+        [data-theme=light] { 
+            --bg:#f8fafc; --surface:#f1f5f9; --card:#ffffff; --card2:#f8fafc;
+            --border:rgba(30,144,255,0.2); --bdim:rgba(30,144,255,0.08);
+            --cyan:#0284c7; --blue:#2563eb; --green:#10b981; --red:#ef4444; --gold:#f59e0b;
+            --text:#0f172a; --muted:#64748b; --rdim:rgba(239,68,68,0.08);
+            --r:16px; --t:all 0.22s ease; --shadow:0 10px 25px rgba(0,0,0,0.05);
+        }
+        /* ── RESET ───────────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 99px; }
+        a, button, [role=button] { outline: none; user-select: none; text-decoration: none; cursor: pointer; }
+        input, textarea, select { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* ── LOGIN ───────────────────────────────────── */
+        .login-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg);
+            display: flex; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .login-box {
+            background: linear-gradient(135deg,var(--card),var(--card2)); border: 1.5px solid var(--border); border-radius: 24px;
+            padding: 2.5rem 2.2rem; width: 100%; max-width: 400px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+        }
+        .login-logo { font-size: 1.8rem; font-weight: 800; color: var(--cyan); letter-spacing: -0.03em; text-align: center; margin-bottom: 0.3rem; }
+        .login-sub { color: var(--muted); text-align: center; font-size: 0.83rem; margin-bottom: 2rem; font-weight: 600; }
+        .login-field { margin-bottom: 1rem; }
+        .login-field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; letter-spacing: 0.04em; text-transform: uppercase; }
+        .login-field input {
+            width: 100%; padding: 0.82rem 1rem; background: linear-gradient(135deg,rgba(34,209,255,0.04),rgba(34,209,255,0.01)); border: 1.5px solid var(--bdim);
+            border-radius: 12px; color: var(--text); font-size: 0.93rem; font-weight: 500; transition: var(--t);
+        }
+        .login-field input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,209,255,0.1),0 0 12px rgba(34,209,255,0.2); background: linear-gradient(135deg,rgba(34,209,255,0.08),rgba(34,209,255,0.04)); }
+        .login-field input::placeholder { color: var(--muted); }
+        .login-remember { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.2rem; }
+        .login-remember input[type=checkbox] { accent-color: var(--cyan); width: 16px; height: 16px; }
+        .login-remember label { font-size: 0.82rem; color: var(--muted); font-weight: 500; cursor: pointer; }
+        .login-btn {
+            width: 100%; padding: 0.9rem; background: linear-gradient(135deg,var(--cyan),#00b8d4); color: #000;
+            border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 800;
+            font-family: 'Plus Jakarta Sans', sans-serif; transition: var(--t); box-shadow: 0 4px 12px rgba(34,209,255,0.3);
+        }
+        .login-btn:hover:not(:disabled) { background: linear-gradient(135deg,#00d9ff,#33ecff); box-shadow: 0 8px 24px rgba(34,209,255,0.4); transform: translateY(-2px); }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .login-error { margin-top: 0.9rem; font-size: 0.84rem; color: var(--red); font-weight: 600; text-align: center; min-height: 1.2rem; }
+
+        /* ── ADMIN PANEL ─────────────────────────────── */
+        .admin-panel { display: none; }
+        .admin-header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,8,10,0.97); border-bottom: 1px solid var(--border);
+            padding: 0.8rem 5%; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+            backdrop-filter: blur(12px);
+        }
+        [data-theme=light] .admin-header { background: rgba(241,245,249,0.97); }
+        .admin-logo { font-size: 1.2rem; font-weight: 800; color: var(--cyan); letter-spacing: -0.02em; }
+        .admin-logo span { color: var(--muted); font-weight: 500; font-size: 0.78rem; margin-left: 0.5rem; }
+        .header-right { display: flex; align-items: center; gap: 0.7rem; }
+        .conn-pill { display: flex; align-items: center; gap: 0.4rem; padding: 0.32rem 0.8rem; border-radius: 99px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 600; }
+        .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 2s ease infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .user-pill { display: flex; align-items: center; gap: 0.4rem; padding: 0.32rem 0.8rem; border-radius: 99px; background: var(--card); border: 1px solid var(--border); font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+        .user-pill i { color: var(--cyan); }
+        .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--card); border: 1.5px solid var(--border); color: var(--muted); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: var(--t); }
+        .icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+        .logout-btn { padding: 0.42rem 1rem; background: var(--rdim); border: 1.5px solid rgba(248,113,113,0.2); border-radius: 99px; color: var(--red); font-size: 0.8rem; font-weight: 700; transition: var(--t); }
+        .logout-btn:hover { background: rgba(248,113,113,0.2); }
+
+        /* ── ADMIN CONTAINER ─────────────────────────── */
+        .admin-container { max-width: 1400px; margin: 0 auto; padding: 2rem 5%; }
+
+        /* ── STATS ───────────────────────────────────── */
+        .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+        @media(max-width:900px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+        .stat-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.2rem 1.4rem; display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { font-size: 1.6rem; color: var(--cyan); flex-shrink: 0; }
+        .stat-info h3 { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+        .stat-info p { font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+
+        /* ── TABS ────────────────────────────────────── */
+        .tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+        .tab { padding: 0.65rem 1.3rem; background: transparent; border: none; color: var(--muted); font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: var(--t); border-bottom: 2.5px solid transparent; margin-bottom: -1px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .tab:hover { color: var(--text); }
+        .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+        /* ── PANELS ──────────────────────────────────── */
+        .content-panel { display: none; }
+        .content-panel.active { display: block; }
+
+        /* ── PANEL TOOLBAR ───────────────────────────── */
+        .panel-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .panel-title { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+        .panel-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .add-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.2rem; background: var(--cyan); color: #000; border: none; border-radius: 99px; font-size: 0.86rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; transition: var(--t); }
+        .add-btn:hover { background: #33ecff; transform: translateY(-1px); }
+        .del-all-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.2rem; background: var(--rdim); color: var(--red); border: 1.5px solid rgba(248,113,113,0.2); border-radius: 99px; font-size: 0.86rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; transition: var(--t); }
+        .del-all-btn:hover { background: rgba(248,113,113,0.2); }
+
+        /* ── FORM BOX ────────────────────────────────── */
+        .form-box { background: linear-gradient(135deg,var(--card),var(--card2)); border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.8rem; margin-bottom: 2rem; display: none; transition: var(--t); }
+        .form-box.open { display: block; }
+        .form-box-title { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 1.4rem; display: flex; align-items: center; gap: 0.5rem; }
+        .form-box-title i { color: var(--cyan); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media(max-width:700px) { .form-grid { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .form-group label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 0.78rem 0.9rem; background: linear-gradient(135deg,rgba(34,209,255,0.04),rgba(34,209,255,0.01)); border: 1.5px solid var(--bdim);
+            border-radius: 12px; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: var(--t);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,209,255,0.1),0 0 12px rgba(34,209,255,0.2); background: linear-gradient(135deg,rgba(34,209,255,0.08),rgba(34,209,255,0.04)); }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+        .form-group textarea { resize: vertical; min-height: 90px; }
+        .form-group select option { background: var(--card); color: var(--text); }
+        .form-full { grid-column: 1 / -1; }
+        .img-preview { margin-top: 0.5rem; border-radius: 10px; max-height: 120px; object-fit: contain; border: 1.5px solid var(--border); display: none; }
+        .img-preview.show { display: block; }
+        .form-actions { display: flex; gap: 0.7rem; margin-top: 1.4rem; flex-wrap: wrap; }
+        .btn-save { padding: 0.72rem 1.8rem; background: linear-gradient(135deg,var(--cyan),#00b8d4); color: #000; border: none; border-radius: 99px; font-size: 0.9rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; transition: var(--t); display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px rgba(34,209,255,0.3); }
+        .btn-save:hover { background: linear-gradient(135deg,#00d9ff,#33ecff); box-shadow: 0 8px 24px rgba(34,209,255,0.4); transform: translateY(-2px); }
+        .btn-cancel { padding: 0.72rem 1.4rem; background: linear-gradient(135deg,rgba(145,158,171,0.08),transparent); color: var(--muted); border: 1.5px solid rgba(145,158,171,0.2); border-radius: 99px; font-size: 0.9rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; transition: var(--t); }
+        .btn-cancel:hover { color: var(--text); border-color: rgba(145,158,171,0.4); background: rgba(145,158,171,0.1); transform: translateY(-1px); }
+
+        /* ── DYNAMIC LISTS (videos, images, steps…) ── */
+        .dyn-section { margin-top: 1.4rem; }
+        .dyn-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+        .dyn-item { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .dyn-item input, .dyn-item textarea { flex: 1; padding: 0.6rem 0.8rem; background: var(--surface); border: 1.5px solid var(--bdim); border-radius: 10px; color: var(--text); font-size: 0.86rem; font-weight: 500; transition: var(--t); }
+        .dyn-item input:focus, .dyn-item textarea:focus { outline: none; border-color: var(--cyan); }
+        .dyn-item input::placeholder, .dyn-item textarea::placeholder { color: var(--muted); }
+        .dyn-remove { width: 30px; height: 30px; border-radius: 50%; background: var(--rdim); border: 1px solid rgba(248,113,113,0.15); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; transition: var(--t); margin-top: 0.2rem; }
+        .dyn-remove:hover { background: rgba(248,113,113,0.2); }
+        .dyn-add { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.9rem; background: rgba(0,229,255,0.06); border: 1.5px solid rgba(0,229,255,0.15); border-radius: 99px; color: var(--cyan); font-size: 0.8rem; font-weight: 700; transition: var(--t); margin-top: 0.2rem; }
+        .dyn-add:hover { background: rgba(0,229,255,0.12); }
+        .video-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.4rem; flex: 1; }
+        @media(max-width:600px) { .video-row { grid-template-columns: 1fr; } }
+
+        /* ── LESSONS ─────────────────────────────────── */
+        .lesson-editor { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem; margin-bottom: 0.8rem; }
+        .lesson-editor-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+        .lesson-num { width: 26px; height: 26px; border-radius: 50%; background: rgba(0,229,255,0.1); border: 1.5px solid rgba(0,229,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; color: var(--cyan); flex-shrink: 0; }
+        .lesson-editor-head input { flex: 1; padding: 0.52rem 0.8rem; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.88rem; font-weight: 600; }
+        .lesson-editor-head input:focus { outline: none; border-color: var(--cyan); }
+        .lesson-editor-head input::placeholder { color: var(--muted); }
+        .prompts-container { margin: 0.6rem 0 0.8rem; }
+        .prompt-editor { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .prompt-editor input.pt { width: 160px; flex-shrink: 0; padding: 0.5rem 0.7rem; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.83rem; }
+        .prompt-editor input.pt:focus { outline: none; border-color: var(--cyan); }
+        .prompt-editor textarea { flex: 1; min-height: 70px; padding: 0.5rem 0.7rem; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.83rem; resize: vertical; line-height: 1.55; }
+        .prompt-editor textarea:focus { outline: none; border-color: var(--cyan); }
+        .prompt-editor input::placeholder, .prompt-editor textarea::placeholder { color: var(--muted); }
+        .add-prompt-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.35rem 0.8rem; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.15); border-radius: 99px; color: var(--cyan); font-size: 0.76rem; font-weight: 700; transition: var(--t); }
+        .add-prompt-btn:hover { background: rgba(0,229,255,0.1); }
+
+        /* ── ITEM LISTS (cards grid) ─────────────────── */
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1rem; }
+        .item-admin-card { background: linear-gradient(135deg,var(--card),var(--card2)); border: 1.5px solid var(--border); border-radius: var(--r); display: flex; flex-direction: column; overflow: hidden; transition: var(--t); position: relative; }
+        .item-admin-card:hover { border-color: rgba(34,209,255,0.4); box-shadow: 0 8px 24px rgba(34,209,255,0.1); transform: translateY(-2px); }
+        .item-thumb { height: 130px; background: var(--surface); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+        .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .item-thumb i { font-size: 2.2rem; color: #222; }
+        .item-body { padding: 0.9rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+        .item-body h4 { font-size: 0.9rem; font-weight: 700; color: var(--text); line-height: 1.35; }
+        .item-body p { color: var(--muted); font-size: 0.78rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .item-tags { display: flex; flex-wrap: wrap; gap: 0.28rem; margin-top: 0.2rem; }
+        .item-tags span { background: linear-gradient(135deg,rgba(34,209,255,0.12),rgba(34,209,255,0.06)); border: 1px solid rgba(34,209,255,0.25); color: var(--cyan); padding: 0.1rem 0.5rem; border-radius: 99px; font-size: 0.68rem; font-weight: 600; transition: all var(--t); }
+        .item-tags span:hover { background: rgba(34,209,255,0.2); border-color: rgba(34,209,255,0.4); }
+        .item-actions { display: flex; gap: 0.4rem; padding: 0.7rem 0.9rem; border-top: 1px solid var(--border); }
+        .btn-edit { flex: 1; padding: 0.45rem; background: linear-gradient(135deg,rgba(34,209,255,0.12),rgba(34,209,255,0.06)); border: 1px solid rgba(34,209,255,0.25); border-radius: 8px; color: var(--cyan); font-size: 0.8rem; font-weight: 700; transition: var(--t); display: flex; align-items: center; justify-content: center; gap: 0.3rem; }
+        .btn-edit:hover { background: rgba(34,209,255,0.2); border-color: rgba(34,209,255,0.4); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(34,209,255,0.15); }
+        .btn-del { flex: 1; padding: 0.45rem; background: linear-gradient(135deg,rgba(247,118,142,0.12),rgba(247,118,142,0.06)); border: 1px solid rgba(247,118,142,0.25); border-radius: 8px; color: var(--red); font-size: 0.8rem; font-weight: 700; transition: var(--t); display: flex; align-items: center; justify-content: center; gap: 0.3rem; }
+        .btn-del:hover { background: rgba(247,118,142,0.2); border-color: rgba(247,118,142,0.4); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(247,118,142,0.15); }
+        .empty-state { text-align: center; padding: 3.5rem 2rem; background: var(--card); border-radius: var(--r); border: 1.5px solid var(--border); color: var(--muted); }
+        .empty-state i { font-size: 2.5rem; color: #222; display: block; margin-bottom: 0.8rem; }
+        .loading-state { text-align: center; padding: 3rem; color: var(--muted); }
+        .loading-state i { font-size: 2rem; color: var(--cyan); display: block; margin-bottom: 0.6rem; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── PRICE TOGGLE ────────────────────────────── */
+        .price-toggle { display: flex; align-items: center; gap: 0.7rem; padding: 0.78rem 0.9rem; background: var(--surface); border: 1.5px solid var(--bdim); border-radius: 12px; }
+        .price-toggle input[type=checkbox] { accent-color: var(--cyan); width: 16px; height: 16px; cursor: pointer; }
+        .price-toggle label { font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+
+        /* ── SETTINGS ────────────────────────────────── */
+        .settings-box { max-width: 480px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 2rem; }
+        .settings-box h3 { font-size: 1rem; font-weight: 800; margin-bottom: 1.4rem; }
+        .pwd-status { margin-top: 0.8rem; font-size: 0.86rem; font-weight: 600; min-height: 1.2rem; }
+
+        /* ── TOAST ───────────────────────────────────── */
+        @keyframes toastIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+        .danger-zone { background: var(--rdim); border: 1.5px solid rgba(248,113,113,0.15); border-radius: var(--r); padding: 1.5rem; margin-top: 2rem; }
+        .danger-zone h4 { font-size: 0.9rem; font-weight: 800; color: var(--red); margin-bottom: 0.8rem; }
+        .danger-zone p { font-size: 0.84rem; color: var(--muted); margin-bottom: 1rem; }
+        .danger-row { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+        .free-badge { display:inline-block; background:rgba(0,229,255,.1); border:1px solid rgba(0,229,255,.25); color:var(--cyan); padding:.15rem .6rem; border-radius:99px; font-size:.7rem; font-weight:700; }
+        .paid-badge { display:inline-block; background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.25); color:var(--gold); padding:.15rem .6rem; border-radius:99px; font-size:.7rem; font-weight:700; }
+        @media(max-width:600px) { .items-grid { grid-template-columns:1fr; } .stats-row { grid-template-columns:1fr 1fr; } }
+        @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════ LOGIN ═══════════ -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div class="login-logo">NEUBLOCK</div>
+        <div class="login-sub">Admin Dashboard</div>
+        <div class="login-field">
+            <label for="emailInput">Email</label>
+            <input type="email" id="emailInput" placeholder="admin@neublock.com" maxlength="254" autocomplete="email" spellcheck="false">
+        </div>
+        <div class="login-field">
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" placeholder="••••••••" maxlength="200" autocomplete="current-password">
+        </div>
+        <div class="login-remember">
+            <input type="checkbox" id="rememberMe">
+            <label for="rememberMe">Remember me</label>
+        </div>
+        <button class="login-btn" id="loginBtn" onclick="login()">Login</button>
+        <div class="login-error" id="loginError" role="alert" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<div class="admin-panel" id="adminPanel">
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="admin-logo">NEUBLOCK <span>Admin</span></div>
+        <div class="header-right">
+            <div class="conn-pill"><span class="conn-dot"></span><span id="connText">Live</span></div>
+            <div class="user-pill"><i class="fas fa-user-circle"></i><span id="userEmail">—</span></div>
+            <button class="icon-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
+            <a href="research.html" class="icon-btn" aria-label="AI Research Tool" title="AI Research Tool" style="color:var(--cyan);border-color:rgba(0,229,255,0.3)"><i class="fas fa-brain"></i></a>
+            <a href="index.html" class="icon-btn" aria-label="View site" title="View site"><i class="fas fa-external-link-alt"></i></a>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card"><i class="fas fa-robot stat-icon"></i><div class="stat-info"><h3>Projects</h3><p id="totalProjects">0</p></div></div>
+            <div class="stat-card"><i class="fas fa-microchip stat-icon"></i><div class="stat-info"><h3>Components</h3><p id="totalComponents">0</p></div></div>
+            <div class="stat-card"><i class="fas fa-project-diagram stat-icon"></i><div class="stat-info"><h3>Circuits</h3><p id="totalCircuits">0</p></div></div>
+            <div class="stat-card"><i class="fas fa-graduation-cap stat-icon"></i><div class="stat-info"><h3>Courses</h3><p id="totalCourses">0</p></div></div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="projects" onclick="switchTab('projects')"><i class="fas fa-robot"></i> Projects</button>
+            <button class="tab" data-tab="components" onclick="switchTab('components')"><i class="fas fa-microchip"></i> Components</button>
+            <button class="tab" data-tab="circuits" onclick="switchTab('circuits')"><i class="fas fa-project-diagram"></i> Circuits</button>
+            <button class="tab" data-tab="courses" onclick="switchTab('courses')"><i class="fas fa-graduation-cap"></i> Courses</button>
+            <button class="tab" data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+
+        <!-- ══ PROJECTS PANEL ══ -->
+        <div id="projectsPanel" class="content-panel active">
+            <div class="panel-toolbar">
+                <span class="panel-title">Projects</span>
+                <div class="panel-actions">
+                    <button class="add-btn" onclick="showAddProjectForm()"><i class="fas fa-plus"></i> Add Project</button>
+                </div>
+            </div>
+            <div class="form-box" id="projectForm">
+                <div class="form-box-title"><i class="fas fa-robot"></i> <span id="projectFormTitle">New Project</span></div>
+                <input type="hidden" id="projectId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Title *</label><input type="text" id="projectTitle" maxlength="200" placeholder="e.g. Line-Following Robot"></div>
+                    <div class="form-group"><label>Icon (fa-*)</label><input type="text" id="projectIcon" maxlength="50" placeholder="fa-robot" value="fa-robot"></div>
+                    <div class="form-group form-full"><label>Description</label><textarea id="projectDesc" maxlength="5000" placeholder="Describe this project…"></textarea></div>
+                    <div class="form-group"><label>Technologies (comma-separated)</label><input type="text" id="projectTech" maxlength="500" placeholder="Arduino, Python, C++"></div>
+                    <div class="form-group"><label>GitHub URL</label><input type="url" id="projectGithub" maxlength="500" placeholder="https://github.com/…"></div>
+                    <div class="form-group"><label>Live Demo URL</label><input type="url" id="projectLink" maxlength="500" placeholder="https://…"></div>
+                    <div class="form-group"><label>Main Video URL (YouTube/Vimeo)</label><input type="url" id="projectVideo" maxlength="500" placeholder="https://youtube.com/…"></div>
+                </div>
+
+                <!-- Images -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Image URLs</div>
+                    <div id="imagesContainer"></div>
+                    <button class="dyn-add" onclick="addImage()"><i class="fas fa-plus"></i> Add Image URL</button>
+                </div>
+
+                <!-- Code Files -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Code Files</div>
+                    <div id="codeFilesContainer"></div>
+                    <button class="dyn-add" onclick="addCodeFile()"><i class="fas fa-plus"></i> Add Code File</button>
+                </div>
+
+                <!-- Components Used -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Components Used</div>
+                    <div id="componentsContainer"></div>
+                    <button class="dyn-add" onclick="addComponent()"><i class="fas fa-plus"></i> Add Component</button>
+                </div>
+
+                <!-- Build Steps -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Build Steps</div>
+                    <div id="stepsContainer"></div>
+                    <button class="dyn-add" onclick="addBuildStep()"><i class="fas fa-plus"></i> Add Step</button>
+                </div>
+
+                <!-- Videos -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Additional Videos</div>
+                    <div id="projectVideosContainer"></div>
+                    <button class="dyn-add" onclick="addProjectVideo()"><i class="fas fa-plus"></i> Add Video</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveProject()"><i class="fas fa-save"></i> Save Project</button>
+                    <button class="btn-cancel" onclick="cancelProjectForm()">Cancel</button>
+                </div>
+            </div>
+            <div id="projectsList" class="items-grid"><div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div></div>
+        </div>
+
+        <!-- ══ COMPONENTS PANEL ══ -->
+        <div id="componentsPanel" class="content-panel">
+            <div class="panel-toolbar">
+                <span class="panel-title">Components</span>
+                <div class="panel-actions">
+                    <button class="add-btn" onclick="showAddComponentForm()"><i class="fas fa-plus"></i> Add Component</button>
+                </div>
+            </div>
+            <div class="form-box" id="componentForm">
+                <div class="form-box-title"><i class="fas fa-microchip"></i> <span id="componentFormTitle">New Component</span></div>
+                <input type="hidden" id="componentId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Name *</label><input type="text" id="componentName" maxlength="200" placeholder="e.g. HC-SR04 Ultrasonic Sensor"></div>
+                    <div class="form-group"><label>Category</label>
+                        <select id="componentCategory">
+                            <option value="">-- Select --</option>
+                            <option>Sensor</option><option>Motor</option><option>IC</option><option>Module</option>
+                            <option>Actuator</option><option>Display</option><option>Power</option>
+                            <option>Communication</option><option>Passive</option><option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full"><label>Description</label><textarea id="componentDesc" maxlength="5000" placeholder="Describe this component…"></textarea></div>
+                    <div class="form-group"><label>Manufacturer</label><input type="text" id="componentManufacturer" maxlength="200" placeholder="e.g. SparkFun"></div>
+                    <div class="form-group"><label>Datasheet URL</label><input type="url" id="componentDatasheet" maxlength="500" placeholder="https://…"></div>
+                    <div class="form-group"><label>Image URL</label><input type="url" id="componentImage" maxlength="500" placeholder="https://…" oninput="previewImg('componentImage','componentImgPreview')"></div>
+                    <div class="form-group form-full"><img class="img-preview" id="componentImgPreview" alt="Preview"></div>
+                    <div class="form-group"><label>Pinout Diagram URL</label><input type="url" id="componentPinout" maxlength="500" placeholder="https://…"></div>
+                    <div class="form-group"><label>Specifications</label><textarea id="componentSpecs" maxlength="2000" placeholder="Voltage: 5V, Range: 2-400cm…"></textarea></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="componentPrice" maxlength="50" placeholder="e.g. ₹120"></div>
+                    <div class="form-group"><label>Tags (comma-separated)</label><input type="text" id="componentTags" maxlength="500" placeholder="ultrasonic, distance, sensor"></div>
+                    <div class="form-group form-full"><label>Notes</label><textarea id="componentNotes" maxlength="5000" placeholder="Usage notes, wiring tips…"></textarea></div>
+                </div>
+
+                <!-- Videos -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Tutorial Videos</div>
+                    <div id="componentVideosContainer"></div>
+                    <button class="dyn-add" onclick="addComponentVideo()"><i class="fas fa-plus"></i> Add Video</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveComponent()"><i class="fas fa-save"></i> Save Component</button>
+                    <button class="btn-cancel" onclick="cancelComponentForm()">Cancel</button>
+                </div>
+            </div>
+            <div id="componentsList" class="items-grid"><div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div></div>
+        </div>
+
+        <!-- ══ CIRCUITS PANEL ══ -->
+        <div id="circuitsPanel" class="content-panel">
+            <div class="panel-toolbar">
+                <span class="panel-title">Circuits</span>
+                <div class="panel-actions">
+                    <button class="add-btn" onclick="showAddCircuitForm()"><i class="fas fa-plus"></i> Add Circuit</button>
+                </div>
+            </div>
+            <div class="form-box" id="circuitForm">
+                <div class="form-box-title"><i class="fas fa-project-diagram"></i> <span id="circuitFormTitle">New Circuit</span></div>
+                <input type="hidden" id="circuitId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Name *</label><input type="text" id="circuitName" maxlength="200" placeholder="e.g. H-Bridge Motor Driver"></div>
+                    <div class="form-group"><label>Difficulty</label>
+                        <select id="circuitDifficulty">
+                            <option value="">-- Select --</option>
+                            <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full"><label>Description</label><textarea id="circuitDesc" maxlength="5000" placeholder="Describe this circuit…"></textarea></div>
+                    <div class="form-group"><label>Circuit Image URL</label><input type="url" id="circuitImage" maxlength="500" placeholder="https://…" oninput="previewImg('circuitImage','circuitImgPreview')"></div>
+                    <div class="form-group form-full"><img class="img-preview" id="circuitImgPreview" alt="Preview"></div>
+                    <div class="form-group"><label>Schematic PDF URL</label><input type="url" id="circuitPdf" maxlength="500" placeholder="https://…"></div>
+                    <div class="form-group"><label>Code / Script URL</label><input type="url" id="circuitCode" maxlength="500" placeholder="https://github.com/…"></div>
+                    <div class="form-group form-full"><label>Notes</label><textarea id="circuitNotes" maxlength="5000" placeholder="Wiring notes, tips…"></textarea></div>
+                </div>
+
+                <!-- Components Used -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Components List</div>
+                    <div id="circuitComponentsContainer"></div>
+                    <button class="dyn-add" onclick="addCircuitComponent()"><i class="fas fa-plus"></i> Add Component</button>
+                </div>
+
+                <!-- Videos -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Videos</div>
+                    <div id="circuitVideosContainer"></div>
+                    <button class="dyn-add" onclick="addCircuitVideo()"><i class="fas fa-plus"></i> Add Video</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveCircuit()"><i class="fas fa-save"></i> Save Circuit</button>
+                    <button class="btn-cancel" onclick="cancelCircuitForm()">Cancel</button>
+                </div>
+            </div>
+            <div id="circuitsList" class="items-grid"><div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div></div>
+        </div>
+
+        <!-- ══ COURSES PANEL ══ -->
+        <div id="coursesPanel" class="content-panel">
+            <div class="panel-toolbar">
+                <span class="panel-title">Courses</span>
+                <div class="panel-actions">
+                    <button class="add-btn" onclick="showAddCourseForm()"><i class="fas fa-plus"></i> Add Course</button>
+                </div>
+            </div>
+            <div class="form-box" id="courseForm">
+                <div class="form-box-title"><i class="fas fa-graduation-cap"></i> <span id="courseFormTitle">New Course</span></div>
+                <input type="hidden" id="courseId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Title *</label><input type="text" id="courseTitle" maxlength="200" placeholder="e.g. Arduino for Beginners"></div>
+                    <div class="form-group"><label>Category</label>
+                        <select id="courseCategory">
+                            <option value="arduino">Arduino</option>
+                            <option value="robotics">Robotics</option>
+                            <option value="ai">AI &amp; ML</option>
+                            <option value="python">Python</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full"><label>Description</label><textarea id="courseDesc" maxlength="5000" placeholder="Course overview…"></textarea></div>
+                    <div class="form-group"><label>Level</label>
+                        <select id="courseLevel">
+                            <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Thumbnail URL</label><input type="url" id="courseThumbnail" maxlength="500" placeholder="https://…" oninput="previewImg('courseThumbnail','courseThumbnailPreview')"></div>
+                    <div class="form-group form-full"><img class="img-preview" id="courseThumbnailPreview" alt="Preview"></div>
+                    <!-- Pricing -->
+                    <div class="form-group"><label>Pricing</label>
+                        <div class="price-toggle">
+                            <input type="checkbox" id="courseIsFree" checked>
+                            <label for="courseIsFree">Free Course</label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="coursePriceGroup" style="display:none;">
+                        <label>Price (₹)</label>
+                        <input type="text" id="coursePrice" maxlength="50" placeholder="e.g. 299" value="299">
+                    </div>
+                </div>
+
+                <!-- Course Videos -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Course Videos</div>
+                    <div id="courseVideosContainer"></div>
+                    <button class="dyn-add" onclick="addCourseVideo()"><i class="fas fa-plus"></i> Add Video</button>
+                </div>
+
+                <!-- Lessons -->
+                <div class="dyn-section">
+                    <div class="dyn-label">Lessons</div>
+                    <div id="courseLessonsContainer"></div>
+                    <button class="dyn-add" onclick="addCourseLesson()"><i class="fas fa-plus"></i> Add Lesson</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveCourse()"><i class="fas fa-save"></i> Save Course</button>
+                    <button class="btn-cancel" onclick="cancelCourseForm()">Cancel</button>
+                </div>
+            </div>
+            <div id="coursesList" class="items-grid"><div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div></div>
+        </div>
+
+        <!-- ══ SETTINGS PANEL ══ -->
+        <div id="settingsPanel" class="content-panel">
+            <div class="panel-toolbar"><span class="panel-title">Settings</span></div>
+            <div class="settings-box">
+                <h3><i class="fas fa-lock" style="color:var(--cyan);margin-right:.5rem;"></i>Change Password</h3>
+                <div class="form-group" style="margin-bottom:0.8rem;"><label>Current Password</label><input type="password" id="currentPwd" maxlength="200" placeholder="••••••••" autocomplete="current-password"></div>
+                <div class="form-group" style="margin-bottom:0.8rem;"><label>New Password</label><input type="password" id="newPwd" maxlength="200" placeholder="Min 8 characters" autocomplete="new-password"></div>
+                <div class="form-group" style="margin-bottom:1rem;"><label>Confirm New Password</label><input type="password" id="confirmPwd" maxlength="200" placeholder="Repeat new password" autocomplete="new-password"></div>
+                <button class="btn-save" onclick="changePassword()"><i class="fas fa-save"></i> Update Password</button>
+                <div class="pwd-status" id="pwdStatus"></div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone" style="max-width:480px;margin-top:2rem;">
+                <h4><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
+                <p>These actions are irreversible. Be absolutely certain before proceeding.</p>
+                <div class="danger-row">
+                    <button class="del-all-btn" onclick="deleteAllProjects()"><i class="fas fa-trash-alt"></i> Delete All Projects</button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /admin-container -->
+</div><!-- /admin-panel -->
+
+<script>
+'use strict';
+
+// ─── SECURITY HELPERS ───────────────────────────────────────────────────────
+function escapeHtml(u) {
+    if (u == null) return '';
+    return String(u).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
+function safeUrl(u) {
+    if (!u) return '';
+    try {
+        var p = new URL(String(u).trim());
+        return (p.protocol === 'http:' || p.protocol === 'https:') ? p.href : '';
+    } catch (e) { return ''; }
+}
+function safeIcon(i) {
+    if (!i) return 'fa-robot';
+    var c = String(i).trim();
+    return /^fa-[a-z0-9-]+$/.test(c) ? c : 'fa-robot';
+}
+function sanitiseText(s, max) {
+    max = max || 5000;
+    if (!s) return '';
+    return String(s).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g,'').trim().substring(0, max);
+}
+function isValidId(id) { return typeof id === 'string' && /^[a-zA-Z0-9_-]{1,128}$/.test(id); }
+
+// ─── THEME ──────────────────────────────────────────────────────────────────
+(function () {
+    var t = localStorage.getItem('nb_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    var ic = document.getElementById('themeIcon');
+    if (ic) ic.className = t === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+})();
+document.getElementById('themeToggle').addEventListener('click', function () {
+    var c = document.documentElement.getAttribute('data-theme') || 'dark';
+    var n = c === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('nb_theme', n);
+    document.getElementById('themeIcon').className = n === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+});
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function showToast(msg, type, dur) {
+    type = type || 'success'; dur = dur || 3200;
+    var box = document.getElementById('toastBox');
+    if (!box) {
+        box = document.createElement('div'); box.id = 'toastBox';
+        box.style.cssText = 'position:fixed;bottom:1.4rem;right:1.4rem;z-index:99999;display:flex;flex-direction:column;gap:.4rem;pointer-events:none;';
+        document.body.appendChild(box);
+    }
+    var t = document.createElement('div');
+    var bgs = { success:'rgba(0,229,255,.92)', error:'rgba(248,113,113,.92)', info:'rgba(59,130,246,.92)' };
+    var ics = { success:'fa-check-circle', error:'fa-times-circle', info:'fa-info-circle' };
+    t.style.cssText = 'padding:.72rem 1.1rem;border-radius:12px;font-size:.84rem;font-weight:600;color:'
+        + (type === 'success' ? '#000' : '#fff') + ';background:' + (bgs[type]||bgs.info)
+        + ';display:flex;align-items:center;gap:.45rem;max-width:300px;animation:toastIn .2s ease;pointer-events:auto;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+    t.innerHTML = '<i class="fas ' + (ics[type]||ics.info) + '"></i>' + escapeHtml(msg);
+    box.appendChild(t);
+    setTimeout(function () {
+        t.style.opacity = '0'; t.style.transform = 'translateY(6px)'; t.style.transition = '.2s ease';
+        setTimeout(function () { t.remove(); }, 220);
+    }, dur);
+}
+
+// ─── IMAGE PREVIEW ───────────────────────────────────────────────────────────
+function previewImg(inputId, previewId) {
+    var val = document.getElementById(inputId).value.trim();
+    var el  = document.getElementById(previewId);
+    var url = safeUrl(val);
+    if (url) { el.src = url; el.classList.add('show'); }
+    else { el.src = ''; el.classList.remove('show'); }
+}
+
+// ─── AUTH — Rate Limiting ─────────────────────────────────────────────────────
+var LOCK_KEY = 'nb_admin_lock', MAX_ATTEMPTS = 5, LOCK_MS = 15 * 60 * 1000;
+function isLockedOut() {
+    try {
+        var d = JSON.parse(localStorage.getItem(LOCK_KEY) || '{}');
+        if (!d.until) return false;
+        if (Date.now() < d.until) return true;
+        localStorage.removeItem(LOCK_KEY); return false;
+    } catch (e) { return false; }
+}
+function remainingLockoutMinutes() {
+    try {
+        var d = JSON.parse(localStorage.getItem(LOCK_KEY) || '{}');
+        return d.until ? Math.ceil((d.until - Date.now()) / 60000) : 0;
+    } catch (e) { return 0; }
+}
+function recordFailedAttempt() {
+    try {
+        var d = JSON.parse(localStorage.getItem(LOCK_KEY) || '{}');
+        d.attempts = (d.attempts || 0) + 1;
+        if (d.attempts >= MAX_ATTEMPTS) d.until = Date.now() + LOCK_MS;
+        localStorage.setItem(LOCK_KEY, JSON.stringify(d));
+    } catch (e) {}
+}
+function clearLockout() { localStorage.removeItem(LOCK_KEY); }
+
+// ─── AUTH — Login / Logout ───────────────────────────────────────────────────
+async function login() {
+    var errEl = document.getElementById('loginError');
+    errEl.textContent = '';
+    if (isLockedOut()) {
+        errEl.textContent = 'Too many attempts. Try again in ' + remainingLockoutMinutes() + ' minute(s).';
+        return;
+    }
+    var email = sanitiseText(document.getElementById('emailInput').value, 254);
+    var pwd   = document.getElementById('passwordInput').value;
+    if (!email || !pwd) { errEl.textContent = 'Please enter email and password.'; return; }
+    var btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    
+    try {
+        var res = await sb.auth.signInWithPassword({ email: email, password: pwd });
+        if (res.error) {
+            recordFailedAttempt();
+            if (isLockedOut()) {
+                errEl.textContent = 'Too many failed attempts. Locked for ' + remainingLockoutMinutes() + ' min.';
+            } else {
+                errEl.textContent = res.error.message || 'Login failed. Check your credentials.';
+            }
+            btn.disabled = false; btn.textContent = 'Login';
+            return;
+        }
+        if (!res.data || !res.data.user) {
+            errEl.textContent = 'Login failed: No user data returned.';
+            btn.disabled = false; btn.textContent = 'Login';
+            return;
+        }
+        clearLockout();
+        localStorage.setItem('nb_admin_session', JSON.stringify({ 
+            email: res.data.user.email, 
+            userId: res.data.user.id,
+            loggedIn: true, 
+            timestamp: Date.now() 
+        }));
+        document.getElementById('userEmail').textContent = res.data.user.email;
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadDashboardData();
+        btn.disabled = false; btn.textContent = 'Login';
+    } catch(e) {
+        errEl.textContent = 'Network error: ' + (e.message || 'Check internet connection');
+        btn.disabled = false; btn.textContent = 'Login';
+    }
+}
+
+function logout() {
+    localStorage.removeItem('nb_admin_session');
+    location.reload();
+}
+
+// ─── Enter key on login ───────────────────────────────────────────────────────
+document.getElementById('passwordInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') login();
+});
+document.getElementById('emailInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') login();
+});
+
+// ─── Check existing session ───────────────────────────────────────────────────
+(function () {
+    setTimeout(function () {
+        (async function() {
+            var session = localStorage.getItem('nb_admin_session');
+            if (session) {
+                try {
+                    var data = JSON.parse(session);
+                    if (data && data.loggedIn && data.email) {
+                        try {
+                            var { data: { user } } = await sb.auth.getUser();
+                            if (user && user.email === data.email) {
+                                document.getElementById('userEmail').textContent = data.email;
+                                document.getElementById('loginOverlay').style.display = 'none';
+                                document.getElementById('adminPanel').style.display = 'block';
+                                loadDashboardData();
+                            } else {
+                                localStorage.removeItem('nb_admin_session');
+                            }
+                        } catch (e) {
+                            localStorage.removeItem('nb_admin_session');
+                        }
+                    }
+                } catch (e) { /* invalid session */ }
+            }
+        })();
+    }, 100);
+})();
+
+// ─── TAB SWITCHING ───────────────────────────────────────────────────────────
+var TABS = ['projects','components','circuits','courses','settings'];
+var tabsLoaded = { projects: true, components: false, circuits: false, courses: false, settings: true };
+function switchTab(name) {
+    // 1. Show / hide panels
+    TABS.forEach(function (t) {
+        var panel = document.getElementById(t + 'Panel');
+        if (panel) panel.classList.toggle('active', t === name);
+    });
+    // 2. Highlight active tab button using data-tab attribute (reliable)
+    document.querySelectorAll('.tab[data-tab]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.dataset.tab === name);
+    });
+    // 3. Lazy-load data on first visit to that tab
+    if (!tabsLoaded[name]) {
+        tabsLoaded[name] = true;
+        if (name === 'components') loadComponents();
+        if (name === 'circuits')   loadCircuits();
+        if (name === 'courses')    loadCourses();
+    }
+}
+
+// ─── DASHBOARD DATA ──────────────────────────────────────────────────────────
+async function loadDashboardData() {
+    try {
+        var [pr, co, ci, cs] = await Promise.all([
+            sb.from('projects').select('id', { count: 'exact', head: true }),
+            sb.from('components').select('id', { count: 'exact', head: true }),
+            sb.from('circuits').select('id', { count: 'exact', head: true }),
+            sb.from('courses').select('id', { count: 'exact', head: true })
+        ]);
+        document.getElementById('totalProjects').textContent  = pr.count || 0;
+        document.getElementById('totalComponents').textContent = co.count || 0;
+        document.getElementById('totalCircuits').textContent  = ci.count || 0;
+        document.getElementById('totalCourses').textContent   = cs.count || 0;
+    } catch (e) { console.error('Stats error:', e); }
+    loadProjects();
+}
+
+// ─── DYNAMIC LIST HELPERS ────────────────────────────────────────────────────
+function mkRemoveBtn(onclick) {
+    return '<button class="dyn-remove" onclick="' + onclick + '" title="Remove"><i class="fas fa-times"></i></button>';
+}
+
+function addImage() {
+    var c = document.getElementById('imagesContainer');
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<input type="url" placeholder="https://…" maxlength="500">' + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+function addCodeFile() {
+    var c = document.getElementById('codeFilesContainer');
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<input type="text" placeholder="File name (e.g. main.ino)" maxlength="200" style="flex:.8">'
+        + '<input type="url" placeholder="File URL" maxlength="500" style="flex:1.2">'
+        + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+function addComponent() {
+    var c = document.getElementById('componentsContainer');
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<input type="text" placeholder="Component name" maxlength="200" style="flex:1">'
+        + '<input type="text" placeholder="Description (optional)" maxlength="300" style="flex:1">'
+        + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+function addBuildStep() {
+    var c = document.getElementById('stepsContainer');
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<input type="text" placeholder="Step description…" maxlength="500">' + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+
+function buildVideoItem(containerId) {
+    var c = document.getElementById(containerId);
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<div class="video-row">'
+        + '<input type="url" placeholder="Video URL (YouTube/Vimeo)" maxlength="500">'
+        + '<input type="text" placeholder="Title (optional)" maxlength="200">'
+        + '<input type="text" placeholder="Credits (optional)" maxlength="200">'
+        + '</div>' + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+function addProjectVideo()   { buildVideoItem('projectVideosContainer'); }
+function addComponentVideo() { buildVideoItem('componentVideosContainer'); }
+function addCircuitVideo()   { buildVideoItem('circuitVideosContainer'); }
+function addCourseVideo()    { buildVideoItem('courseVideosContainer'); }
+function addCircuitComponent() {
+    var c = document.getElementById('circuitComponentsContainer');
+    var d = document.createElement('div'); d.className = 'dyn-item';
+    d.innerHTML = '<input type="text" placeholder="Component name" maxlength="200" style="flex:1.5">'
+        + '<input type="text" placeholder="Qty" maxlength="20" style="flex:.5">'
+        + mkRemoveBtn('this.closest(".dyn-item").remove()');
+    c.appendChild(d);
+}
+
+function collectVideos(containerId) {
+    var vids = [];
+    document.getElementById(containerId).querySelectorAll('.dyn-item').forEach(function (d) {
+        var ins = d.querySelectorAll('input');
+        var url = safeUrl(ins[0] ? ins[0].value.trim() : '');
+        if (!url) return;
+        vids.push({ url: url, title: sanitiseText(ins[1] ? ins[1].value.trim() : '', 200), credits: sanitiseText(ins[2] ? ins[2].value.trim() : '', 200) });
+    });
+    return vids;
+}
+function loadVideosIntoContainer(containerId, vids) {
+    document.getElementById(containerId).innerHTML = '';
+    (vids || []).forEach(function (v) {
+        buildVideoItem(containerId);
+        var items = document.getElementById(containerId).querySelectorAll('.dyn-item');
+        var last = items[items.length - 1];
+        var ins = last.querySelectorAll('input');
+        if (ins[0]) ins[0].value = v.url || '';
+        if (ins[1]) ins[1].value = v.title || '';
+        if (ins[2]) ins[2].value = v.credits || '';
+    });
+}
+
+// ─── LESSON / PROMPT HELPERS ─────────────────────────────────────────────────
+var lessonCount = 0;
+function addCourseLesson(data) {
+    var c  = document.getElementById('courseLessonsContainer');
+    var idx = lessonCount++;
+    var d  = document.createElement('div'); d.className = 'lesson-editor'; d.dataset.idx = idx;
+    d.innerHTML = '<div class="lesson-editor-head">'
+        + '<div class="lesson-num">' + (c.querySelectorAll('.lesson-editor').length + 1) + '</div>'
+        + '<input type="text" class="lesson-title" placeholder="Lesson title…" maxlength="200">'
+        + '<input type="text" class="lesson-desc" placeholder="Short description (optional)" maxlength="300">'
+        + '<button class="dyn-remove" onclick="this.closest(\".lesson-editor\").remove()" title="Remove lesson"><i class="fas fa-times"></i></button>'
+        + '</div>'
+        + '<div class="prompts-container" id="prompts_' + idx + '"></div>'
+        + '<button class="add-prompt-btn" onclick="addPromptToLesson(' + idx + ')"><i class="fas fa-plus"></i> Add Prompt</button>';
+    c.appendChild(d);
+    if (data) {
+        d.querySelector('.lesson-title').value = data.title || '';
+        d.querySelector('.lesson-desc').value  = data.description || '';
+        (data.prompts || []).forEach(function (pr) { addPromptToLesson(idx, pr); });
+    }
+}
+function addPromptToLesson(idx, data) {
+    var c = document.getElementById('prompts_' + idx);
+    if (!c) return;
+    var d = document.createElement('div'); d.className = 'prompt-editor';
+    d.innerHTML = '<input type="text" class="pt" placeholder="Prompt title" maxlength="200">'
+        + '<textarea placeholder="Paste the full AI prompt here…" maxlength="10000"></textarea>'
+        + '<button class="dyn-remove" onclick="this.closest(\".prompt-editor\").remove()" title="Remove prompt"><i class="fas fa-times"></i></button>';
+    c.appendChild(d);
+    if (data) {
+        d.querySelector('.pt').value = data.title || '';
+        d.querySelector('textarea').value = data.prompt || '';
+    }
+}
+function collectLessons() {
+    var lessons = [];
+    document.getElementById('courseLessonsContainer').querySelectorAll('.lesson-editor').forEach(function (le, i) {
+        var title = sanitiseText(le.querySelector('.lesson-title').value.trim(), 200);
+        var desc  = sanitiseText(le.querySelector('.lesson-desc').value.trim(), 300);
+        var prompts = [];
+        le.querySelectorAll('.prompt-editor').forEach(function (pe) {
+            var t  = sanitiseText(pe.querySelector('.pt').value.trim(), 200);
+            var pr = sanitiseText(pe.querySelector('textarea').value.trim(), 10000);
+            if (pr) prompts.push({ title: t || 'Prompt', prompt: pr });
+        });
+        if (title || prompts.length) lessons.push({ order: i, title: title, description: desc, prompts: prompts });
+    });
+    return lessons;
+}
+
+// ─── PRICE TOGGLE ────────────────────────────────────────────────────────────
+document.getElementById('courseIsFree').addEventListener('change', function () {
+    document.getElementById('coursePriceGroup').style.display = this.checked ? 'none' : '';
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// PROJECTS CRUD
+// ════════════════════════════════════════════════════════════════════════════
+var projectsList = [];
+async function loadProjects() {
+    document.getElementById('projectsList').innerHTML = '<div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div>';
+    var res;
+    try {
+        res = await sb.from('projects').select('id,title,description,tech,icon,images').order('created_at',{ascending:false});
+    } catch(e) { showToast('Network error loading projects', 'error'); document.getElementById('projectsList').innerHTML = '<div class="empty-state"><i class="fas fa-wifi"></i>Connection error. Check your internet and try again.</div>'; return; }
+    if (res.error) { showToast('Failed to load projects: ' + res.error.message, 'error'); return; }
+    projectsList = res.data || [];
+    document.getElementById('totalProjects').textContent = projectsList.length;
+    renderProjectsList();
+}
+function renderProjectsList() {
+    var el = document.getElementById('projectsList');
+    if (!projectsList.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-robot"></i>No projects yet. Click "Add Project" to create one.</div>'; return; }
+    el.innerHTML = projectsList.map(function (p) {
+        var id  = escapeHtml(p.id), title = escapeHtml(p.title || '');
+        var ic  = safeIcon(p.icon);
+        var imgs = Array.isArray(p.images) ? p.images : [];
+        var thumb = imgs.find(function (i) { return typeof i === 'string' && i.startsWith('http'); });
+        var tags  = (p.tech || []).slice(0,4).map(function (t) { return '<span>' + escapeHtml(t) + '</span>'; }).join('');
+        return '<div class="item-admin-card">'
+            + '<div class="item-thumb">' + (thumb ? '<img src="' + escapeHtml(thumb) + '" alt="' + title + '" loading="lazy">' : '<i class="fas ' + ic + '"></i>') + '</div>'
+            + '<div class="item-body"><h4>' + title + '</h4><p>' + escapeHtml(p.description || '') + '</p>' + (tags ? '<div class="item-tags">' + tags + '</div>' : '') + '</div>'
+            + '<div class="item-actions"><button class="btn-edit" onclick="editProject(\'' + id + '\')" ><i class="fas fa-pen"></i> Edit</button><button class="btn-del" onclick="deleteProject(\'' + id + '\')" ><i class="fas fa-trash"></i> Delete</button><a href="propage.html?id=' + id + '" target="_blank" class="btn-view"><i class="fas fa-eye"></i> View</a></div>'
+            + '</div>';
+    }).join('');
+}
+function showAddProjectForm() {
+    document.getElementById('projectId').value = '';
+    document.getElementById('projectFormTitle').textContent = 'New Project';
+    document.getElementById('projectTitle').value = '';
+    document.getElementById('projectIcon').value = 'fa-robot';
+    document.getElementById('projectDesc').value = '';
+    document.getElementById('projectTech').value = '';
+    document.getElementById('projectGithub').value = '';
+    document.getElementById('projectLink').value = '';
+    document.getElementById('projectVideo').value = '';
+    ['imagesContainer','codeFilesContainer','componentsContainer','stepsContainer','projectVideosContainer'].forEach(function (id) { document.getElementById(id).innerHTML = ''; });
+    document.getElementById('projectForm').classList.add('open');
+    document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function cancelProjectForm() { document.getElementById('projectForm').classList.remove('open'); }
+async function saveProject() {
+    var id    = document.getElementById('projectId').value.trim();
+    var title = sanitiseText(document.getElementById('projectTitle').value.trim(), 200);
+    if (!title) { showToast('Title is required', 'error'); return; }
+    var saveBtn = document.querySelector('#projectForm .btn-save');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…'; }
+    var images = [], codeFiles = [], components = [], steps = [];
+    document.getElementById('imagesContainer').querySelectorAll('.dyn-item input').forEach(function (i) {
+        var u = safeUrl(i.value.trim()); if (u) images.push(u);
+    });
+    document.getElementById('codeFilesContainer').querySelectorAll('.dyn-item').forEach(function (d) {
+        var ins = d.querySelectorAll('input');
+        var u   = safeUrl(ins[1] ? ins[1].value.trim() : '');
+        var n   = sanitiseText(ins[0] ? ins[0].value.trim() : '', 200);
+        if (u) codeFiles.push({ name: n || 'file', url: u });
+    });
+    document.getElementById('componentsContainer').querySelectorAll('.dyn-item').forEach(function (d) {
+        var ins = d.querySelectorAll('input');
+        var n   = sanitiseText(ins[0] ? ins[0].value.trim() : '', 200);
+        var dc  = sanitiseText(ins[1] ? ins[1].value.trim() : '', 300);
+        if (n) components.push({ name: n, description: dc });
+    });
+    document.getElementById('stepsContainer').querySelectorAll('.dyn-item input').forEach(function (i) {
+        var s = sanitiseText(i.value.trim(), 500); if (s) steps.push(s);
+    });
+    var payload = {
+        title: title,
+        icon: safeIcon(document.getElementById('projectIcon').value.trim()),
+        description: sanitiseText(document.getElementById('projectDesc').value.trim(), 5000),
+        tech: document.getElementById('projectTech').value.split(',').map(function (t) { return t.trim(); }).filter(Boolean).slice(0, 20),
+        github: safeUrl(document.getElementById('projectGithub').value.trim()),
+        link: safeUrl(document.getElementById('projectLink').value.trim()),
+        video: safeUrl(document.getElementById('projectVideo').value.trim()),
+        images: images,
+        code_files: codeFiles,
+        components: components,
+        build_steps: steps,
+        videos: collectVideos('projectVideosContainer')
+    };
+    var res;
+    try {
+        res = id && isValidId(id)
+            ? await sb.from('projects').update(payload).eq('id', id).select()
+            : await sb.from('projects').insert(payload).select();
+    } catch(e) { showToast('Network error saving project', 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Project'; } return; }
+    if (res.error) { showToast('Save failed: ' + res.error.message, 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Project'; } return; }
+    showToast(id ? 'Project updated!' : 'Project created!');
+    cancelProjectForm();
+    loadProjects();
+}
+async function deleteProject(id) {
+    if (!isValidId(id)) return;
+    if (!confirm('Delete this project? This cannot be undone.')) return;
+    var btn = event && event.target ? event.target.closest('button') : null;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+    var res;
+    try { res = await sb.from('projects').delete().eq('id', id).select(); }
+    catch(e) { showToast('Network error', 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    if (res.error) { showToast('Delete failed: ' + res.error.message, 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    showToast('Project deleted', 'info');
+    loadProjects();
+}
+async function editProject(id) {
+    if (!isValidId(id)) return;
+    var res;
+    try { res = await sb.from('projects').select('*').eq('id', id).single(); }
+    catch(e) { showToast('Network error loading project', 'error'); return; }
+    if (res.error || !res.data) { showToast('Project not found', 'error'); return; }
+    var p = res.data;
+    document.getElementById('projectId').value = p.id;
+    document.getElementById('projectFormTitle').textContent = 'Edit Project';
+    document.getElementById('projectTitle').value  = p.title || '';
+    document.getElementById('projectIcon').value   = p.icon  || 'fa-robot';
+    document.getElementById('projectDesc').value   = p.description || '';
+    document.getElementById('projectTech').value   = (p.tech || []).join(', ');
+    document.getElementById('projectGithub').value = p.github || '';
+    document.getElementById('projectLink').value   = p.link   || '';
+    document.getElementById('projectVideo').value  = p.video  || '';
+    ['imagesContainer','codeFilesContainer','componentsContainer','stepsContainer','projectVideosContainer'].forEach(function (id) { document.getElementById(id).innerHTML = ''; });
+    (p.images || []).forEach(function (url) {
+        if (!safeUrl(url)) return;
+        addImage();
+        var items = document.getElementById('imagesContainer').querySelectorAll('.dyn-item input');
+        items[items.length - 1].value = url;
+    });
+    (p.code_files || []).forEach(function (f) {
+        addCodeFile();
+        var items = document.getElementById('codeFilesContainer').querySelectorAll('.dyn-item');
+        var last  = items[items.length - 1];
+        var ins   = last.querySelectorAll('input');
+        if (ins[0]) ins[0].value = f.name || '';
+        if (ins[1]) ins[1].value = f.url  || '';
+    });
+    (p.components || []).forEach(function (c) {
+        addComponent();
+        var items = document.getElementById('componentsContainer').querySelectorAll('.dyn-item');
+        var last  = items[items.length - 1];
+        var ins   = last.querySelectorAll('input');
+        if (ins[0]) ins[0].value = c.name        || '';
+        if (ins[1]) ins[1].value = c.description || '';
+    });
+    (p.build_steps || []).forEach(function (s) {
+        addBuildStep();
+        var items = document.getElementById('stepsContainer').querySelectorAll('.dyn-item input');
+        items[items.length - 1].value = s;
+    });
+    loadVideosIntoContainer('projectVideosContainer', p.videos);
+    document.getElementById('projectForm').classList.add('open');
+    document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+async function deleteAllProjects() {
+    if (!confirm('DELETE ALL PROJECTS? This is irreversible.')) return;
+    if (!confirm('Are you absolutely sure? All project data will be lost.')) return;
+    var res;
+    try { res = await sb.from('projects').delete().gte('created_at', '1970-01-01').select(); }
+    catch(e) { showToast('Network error', 'error'); return; }
+    if (res.error) { showToast('Delete all failed: ' + res.error.message, 'error'); return; }
+    showToast('All projects deleted', 'info');
+    loadProjects();
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// COMPONENTS CRUD
+// ════════════════════════════════════════════════════════════════════════════
+var componentsList = [];
+async function loadComponents() {
+    document.getElementById('componentsList').innerHTML = '<div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div>';
+    var res;
+    try { res = await sb.from('components').select('id,name,category,description,image,tags').order('created_at',{ascending:false}); }
+    catch(e) { showToast('Network error loading components', 'error'); document.getElementById('componentsList').innerHTML = '<div class="empty-state"><i class="fas fa-wifi"></i>Connection error.</div>'; return; }
+    if (res.error) { showToast('Failed to load components', 'error'); return; }
+    componentsList = res.data || [];
+    document.getElementById('totalComponents').textContent = componentsList.length;
+    renderComponentsList();
+}
+function renderComponentsList() {
+    var el = document.getElementById('componentsList');
+    if (!componentsList.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-microchip"></i>No components yet.</div>'; return; }
+    el.innerHTML = componentsList.map(function (c) {
+        var id = escapeHtml(c.id), name = escapeHtml(c.name || ''), cat = escapeHtml(c.category || '');
+        var img  = safeUrl(c.image);
+        var tags = (c.tags || []).slice(0,4).map(function (t) { return '<span>' + escapeHtml(t) + '</span>'; }).join('');
+        return '<div class="item-admin-card">'
+            + '<div class="item-thumb">' + (img ? '<img src="' + escapeHtml(img) + '" alt="' + name + '" loading="lazy">' : '<i class="fas fa-microchip"></i>') + '</div>'
+            + '<div class="item-body">' + (cat ? '<div style="font-size:.7rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;">' + cat + '</div>' : '') + '<h4>' + name + '</h4><p>' + escapeHtml(c.description || '') + '</p>' + (tags ? '<div class="item-tags">' + tags + '</div>' : '') + '</div>'
+            + '<div class="item-actions"><button class="btn-edit" onclick="editComponent(\'' + id + '\')" ><i class="fas fa-pen"></i> Edit</button><button class="btn-del" onclick="deleteComponent(\'' + id + '\')" ><i class="fas fa-trash"></i> Delete</button><a href="componentpage.html?id=' + id + '" target="_blank" class="btn-view"><i class="fas fa-eye"></i> View</a></div>'
+            + '</div>';
+    }).join('');
+}
+function showAddComponentForm() {
+    document.getElementById('componentId').value = '';
+    document.getElementById('componentFormTitle').textContent = 'New Component';
+    ['componentName','componentCategory','componentDesc','componentManufacturer','componentDatasheet','componentImage','componentPinout','componentSpecs','componentPrice','componentTags','componentNotes'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.getElementById('componentImgPreview').classList.remove('show');
+    document.getElementById('componentVideosContainer').innerHTML = '';
+    document.getElementById('componentForm').classList.add('open');
+    document.getElementById('componentForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function cancelComponentForm() { document.getElementById('componentForm').classList.remove('open'); }
+async function saveComponent() {
+    var id   = document.getElementById('componentId').value.trim();
+    var name = sanitiseText(document.getElementById('componentName').value.trim(), 200);
+    if (!name) { showToast('Name is required', 'error'); return; }
+    var saveBtn = document.querySelector('#componentForm .btn-save');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…'; }
+    var payload = {
+        name: name,
+        category: sanitiseText(document.getElementById('componentCategory').value, 100),
+        description: sanitiseText(document.getElementById('componentDesc').value.trim(), 5000),
+        manufacturer: sanitiseText(document.getElementById('componentManufacturer').value.trim(), 200),
+        datasheet: safeUrl(document.getElementById('componentDatasheet').value.trim()),
+        image: safeUrl(document.getElementById('componentImage').value.trim()),
+        pinout: safeUrl(document.getElementById('componentPinout').value.trim()),
+        specifications: sanitiseText(document.getElementById('componentSpecs').value.trim(), 2000),
+        price: sanitiseText(document.getElementById('componentPrice').value.trim(), 50),
+        tags: document.getElementById('componentTags').value.split(',').map(function (t) { return t.trim(); }).filter(Boolean).slice(0,20),
+        notes: sanitiseText(document.getElementById('componentNotes').value.trim(), 5000),
+        videos: collectVideos('componentVideosContainer')
+    };
+    var res;
+    try { res = id && isValidId(id) ? await sb.from('components').update(payload).eq('id', id).select() : await sb.from('components').insert(payload).select(); }
+    catch(e) { showToast('Network error saving component', 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Component'; } return; }
+    if (res.error) { showToast('Save failed: ' + res.error.message, 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Component'; } return; }
+    showToast(id ? 'Component updated!' : 'Component created!');
+    cancelComponentForm(); loadComponents();
+}
+async function deleteComponent(id) {
+    if (!isValidId(id)) return;
+    if (!confirm('Delete this component?')) return;
+    var btn = event && event.target ? event.target.closest('button') : null;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+    var res;
+    try { res = await sb.from('components').delete().eq('id', id).select(); }
+    catch(e) { showToast('Network error', 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    if (res.error) { showToast('Delete failed: ' + res.error.message, 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    showToast('Component deleted', 'info'); loadComponents();
+}
+async function editComponent(id) {
+    if (!isValidId(id)) return;
+    var res;
+    try { res = await sb.from('components').select('*').eq('id', id).single(); }
+    catch(e) { showToast('Network error', 'error'); return; }
+    if (res.error || !res.data) { showToast('Component not found', 'error'); return; }
+    var c = res.data;
+    document.getElementById('componentId').value           = c.id;
+    document.getElementById('componentFormTitle').textContent = 'Edit Component';
+    document.getElementById('componentName').value         = c.name || '';
+    document.getElementById('componentCategory').value     = c.category || '';
+    document.getElementById('componentDesc').value         = c.description || '';
+    document.getElementById('componentManufacturer').value = c.manufacturer || '';
+    document.getElementById('componentDatasheet').value    = c.datasheet || '';
+    document.getElementById('componentImage').value        = c.image || '';
+    document.getElementById('componentPinout').value       = c.pinout || '';
+    document.getElementById('componentSpecs').value        = c.specifications || '';
+    document.getElementById('componentPrice').value        = c.price || '';
+    document.getElementById('componentTags').value         = (c.tags || []).join(', ');
+    document.getElementById('componentNotes').value        = c.notes || '';
+    previewImg('componentImage', 'componentImgPreview');
+    loadVideosIntoContainer('componentVideosContainer', c.videos);
+    document.getElementById('componentForm').classList.add('open');
+    document.getElementById('componentForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// CIRCUITS CRUD
+// ════════════════════════════════════════════════════════════════════════════
+var circuitsList = [];
+async function loadCircuits() {
+    document.getElementById('circuitsList').innerHTML = '<div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div>';
+    var res;
+    try { res = await sb.from('circuits').select('id,name,description,image,difficulty,components_used').order('created_at',{ascending:false}); }
+    catch(e) { showToast('Network error loading circuits', 'error'); document.getElementById('circuitsList').innerHTML = '<div class="empty-state"><i class="fas fa-wifi"></i>Connection error.</div>'; return; }
+    if (res.error) { showToast('Failed to load circuits', 'error'); return; }
+    circuitsList = res.data || [];
+    document.getElementById('totalCircuits').textContent = circuitsList.length;
+    renderCircuitsList();
+}
+function renderCircuitsList() {
+    var el = document.getElementById('circuitsList');
+    if (!circuitsList.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-project-diagram"></i>No circuits yet.</div>'; return; }
+    el.innerHTML = circuitsList.map(function (c) {
+        var id   = escapeHtml(c.id), name = escapeHtml(c.name || ''), diff = escapeHtml(c.difficulty || '');
+        var img  = safeUrl(c.image);
+        var comps = (c.components_used || []).slice(0,4).map(function (x) { return '<span>' + escapeHtml(typeof x === 'string' ? x : x.name || '') + '</span>'; }).join('');
+        return '<div class="item-admin-card">'
+            + '<div class="item-thumb">' + (img ? '<img src="' + escapeHtml(img) + '" alt="' + name + '" loading="lazy">' : '<i class="fas fa-microchip"></i>') + '</div>'
+            + '<div class="item-body">' + (diff ? '<div style="font-size:.7rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;">' + diff + '</div>' : '') + '<h4>' + name + '</h4><p>' + escapeHtml(c.description || '') + '</p>' + (comps ? '<div class="item-tags">' + comps + '</div>' : '') + '</div>'
+            + '<div class="item-actions"><button class="btn-edit" onclick="editCircuit(\'' + id + '\')" ><i class="fas fa-pen"></i> Edit</button><button class="btn-del" onclick="deleteCircuit(\'' + id + '\')" ><i class="fas fa-trash"></i> Delete</button><a href="circuitpage.html?id=' + id + '" target="_blank" class="btn-view"><i class="fas fa-eye"></i> View</a></div>'
+            + '</div>';
+    }).join('');
+}
+function showAddCircuitForm() {
+    document.getElementById('circuitId').value = '';
+    document.getElementById('circuitFormTitle').textContent = 'New Circuit';
+    ['circuitName','circuitDesc','circuitImage','circuitPdf','circuitCode','circuitNotes'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.getElementById('circuitDifficulty').value = '';
+    document.getElementById('circuitImgPreview').classList.remove('show');
+    ['circuitComponentsContainer','circuitVideosContainer'].forEach(function (id) { document.getElementById(id).innerHTML = ''; });
+    document.getElementById('circuitForm').classList.add('open');
+    document.getElementById('circuitForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function cancelCircuitForm() { document.getElementById('circuitForm').classList.remove('open'); }
+async function saveCircuit() {
+    var id   = document.getElementById('circuitId').value.trim();
+    var name = sanitiseText(document.getElementById('circuitName').value.trim(), 200);
+    if (!name) { showToast('Name is required', 'error'); return; }
+    var saveBtn = document.querySelector('#circuitForm .btn-save');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…'; }
+    var comps = [];
+    document.getElementById('circuitComponentsContainer').querySelectorAll('.dyn-item').forEach(function (d) {
+        var ins = d.querySelectorAll('input');
+        var n   = sanitiseText(ins[0] ? ins[0].value.trim() : '', 200);
+        var qty = sanitiseText(ins[1] ? ins[1].value.trim() : '', 20);
+        if (n) comps.push({ name: n, quantity: qty || '1' });
+    });
+    var payload = {
+        name: name,
+        description: sanitiseText(document.getElementById('circuitDesc').value.trim(), 5000),
+        image: safeUrl(document.getElementById('circuitImage').value.trim()),
+        pdf: safeUrl(document.getElementById('circuitPdf').value.trim()),
+        code: safeUrl(document.getElementById('circuitCode').value.trim()),
+        difficulty: document.getElementById('circuitDifficulty').value || null,
+        components_used: comps,
+        notes: sanitiseText(document.getElementById('circuitNotes').value.trim(), 5000),
+        videos: collectVideos('circuitVideosContainer')
+    };
+    var res;
+    try { res = id && isValidId(id) ? await sb.from('circuits').update(payload).eq('id', id).select() : await sb.from('circuits').insert(payload).select(); }
+    catch(e) { showToast('Network error saving circuit', 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Circuit'; } return; }
+    if (res.error) { showToast('Save failed: ' + res.error.message, 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Circuit'; } return; }
+    showToast(id ? 'Circuit updated!' : 'Circuit created!');
+    cancelCircuitForm(); loadCircuits();
+}
+async function deleteCircuit(id) {
+    if (!isValidId(id)) return;
+    if (!confirm('Delete this circuit?')) return;
+    var btn = event && event.target ? event.target.closest('button') : null;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+    var res;
+    try { res = await sb.from('circuits').delete().eq('id', id).select(); }
+    catch(e) { showToast('Network error', 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    if (res.error) { showToast('Delete failed: ' + res.error.message, 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    showToast('Circuit deleted', 'info'); loadCircuits();
+}
+async function editCircuit(id) {
+    if (!isValidId(id)) return;
+    var res;
+    try { res = await sb.from('circuits').select('*').eq('id', id).single(); }
+    catch(e) { showToast('Network error', 'error'); return; }
+    if (res.error || !res.data) { showToast('Circuit not found', 'error'); return; }
+    var c = res.data;
+    document.getElementById('circuitId').value            = c.id;
+    document.getElementById('circuitFormTitle').textContent = 'Edit Circuit';
+    document.getElementById('circuitName').value          = c.name || '';
+    document.getElementById('circuitDesc').value          = c.description || '';
+    document.getElementById('circuitImage').value         = c.image || '';
+    document.getElementById('circuitPdf').value           = c.pdf || '';
+    document.getElementById('circuitCode').value          = c.code || '';
+    document.getElementById('circuitDifficulty').value    = c.difficulty || '';
+    document.getElementById('circuitNotes').value         = c.notes || '';
+    previewImg('circuitImage', 'circuitImgPreview');
+    document.getElementById('circuitComponentsContainer').innerHTML = '';
+    (c.components_used || []).forEach(function (comp) {
+        addCircuitComponent();
+        var items = document.getElementById('circuitComponentsContainer').querySelectorAll('.dyn-item');
+        var last  = items[items.length - 1];
+        var ins   = last.querySelectorAll('input');
+        if (ins[0]) ins[0].value = typeof comp === 'string' ? comp : (comp.name || '');
+        if (ins[1]) ins[1].value = comp.quantity || '1';
+    });
+    loadVideosIntoContainer('circuitVideosContainer', c.videos);
+    document.getElementById('circuitForm').classList.add('open');
+    document.getElementById('circuitForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// COURSES CRUD
+// ════════════════════════════════════════════════════════════════════════════
+var coursesList = [];
+async function loadCourses() {
+    document.getElementById('coursesList').innerHTML = '<div class="loading-state"><i class="fas fa-circle-notch"></i>Loading…</div>';
+    var res;
+    try { res = await sb.from('courses').select('id,title,description,category,level,is_free,price,thumbnail,lessons').order('created_at',{ascending:false}); }
+    catch(e) { showToast('Network error loading courses', 'error'); document.getElementById('coursesList').innerHTML = '<div class="empty-state"><i class="fas fa-wifi"></i>Connection error.</div>'; return; }
+    if (res.error) { showToast('Failed to load courses', 'error'); return; }
+    coursesList = res.data || [];
+    document.getElementById('totalCourses').textContent = coursesList.length;
+    renderCoursesList();
+}
+function renderCoursesList() {
+    var el = document.getElementById('coursesList');
+    if (!coursesList.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-graduation-cap"></i>No courses yet.</div>'; return; }
+    el.innerHTML = coursesList.map(function (c) {
+        var id = escapeHtml(c.id), title = escapeHtml(c.title || ''), cat = escapeHtml(c.category || ''), level = escapeHtml(c.level || '');
+        var img = safeUrl(c.thumbnail);
+        var badge = c.is_free ? '<span class="free-badge">FREE</span>' : '<span class="paid-badge">&#x20b9;' + escapeHtml(String(c.price || '299')) + '</span>';
+            var lessonCount = Array.isArray(c.lessons) ? c.lessons.length : 0;
+        return '<div class="item-admin-card">'
+            + '<div class="item-thumb">' + (img ? '<img src="' + escapeHtml(img) + '" alt="' + title + '" loading="lazy">' : '<i class="fas fa-graduation-cap"></i>') + '</div>'
+            + '<div class="item-body"><div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;">' + badge + '<span style="font-size:.7rem;color:var(--muted);font-weight:700;">' + cat.toUpperCase() + ' &bull; ' + level + ' &bull; ' + lessonCount + ' Lessons</span></div><h4>' + title + '</h4><p>' + escapeHtml(c.description || '') + '</p></div>'
+            + '<div class="item-actions"><button class="btn-edit" onclick="editCourse(\'' + id + '\')" ><i class="fas fa-pen"></i> Edit</button><button class="btn-del" onclick="deleteCourse(\'' + id + '\')" ><i class="fas fa-trash"></i> Delete</button><a href="coursepage.html?id=' + id + '" target="_blank" class="btn-view"><i class="fas fa-eye"></i> View</a></div>'
+            + '</div>';
+    }).join('');
+}
+function showAddCourseForm() {
+    lessonCount = 0;
+    document.getElementById('courseId').value = '';
+    document.getElementById('courseFormTitle').textContent = 'New Course';
+    ['courseTitle','courseDesc','courseThumbnail'].forEach(function (id) { document.getElementById(id).value = ''; });
+    document.getElementById('courseCategory').value = 'arduino';
+    document.getElementById('courseLevel').value    = 'Beginner';
+    document.getElementById('courseIsFree').checked = true;
+    document.getElementById('coursePrice').value    = '299';
+    document.getElementById('coursePriceGroup').style.display = 'none';
+    document.getElementById('courseThumbnailPreview').classList.remove('show');
+    ['courseVideosContainer','courseLessonsContainer'].forEach(function (id) { document.getElementById(id).innerHTML = ''; });
+    document.getElementById('courseForm').classList.add('open');
+    document.getElementById('courseForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function cancelCourseForm() { document.getElementById('courseForm').classList.remove('open'); }
+async function saveCourse() {
+    var id    = document.getElementById('courseId').value.trim();
+    var title = sanitiseText(document.getElementById('courseTitle').value.trim(), 200);
+    if (!title) { showToast('Title is required', 'error'); return; }
+    var saveBtn = document.querySelector('#courseForm .btn-save');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…'; }
+    var isFree = document.getElementById('courseIsFree').checked;
+    var payload = {
+        title: title,
+        category: document.getElementById('courseCategory').value,
+        description: sanitiseText(document.getElementById('courseDesc').value.trim(), 5000),
+        level: document.getElementById('courseLevel').value,
+        thumbnail: safeUrl(document.getElementById('courseThumbnail').value.trim()),
+        is_free: isFree,
+        price: isFree ? '0' : sanitiseText(document.getElementById('coursePrice').value.trim(), 50),
+        videos: collectVideos('courseVideosContainer'),
+        lessons: collectLessons()
+    };
+    var res;
+    try { res = id && isValidId(id) ? await sb.from('courses').update(payload).eq('id', id).select() : await sb.from('courses').insert(payload).select(); }
+    catch(e) { showToast('Network error saving course', 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Course'; } return; }
+    if (res.error) { showToast('Save failed: ' + res.error.message, 'error'); if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Course'; } return; }
+    showToast(id ? 'Course updated!' : 'Course created!');
+    cancelCourseForm(); loadCourses();
+}
+async function deleteCourse(id) {
+    if (!isValidId(id)) return;
+    if (!confirm('Delete this course?')) return;
+    var btn = event && event.target ? event.target.closest('button') : null;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+    var res;
+    try { res = await sb.from('courses').delete().eq('id', id).select(); }
+    catch(e) { showToast('Network error', 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    if (res.error) { showToast('Delete failed: ' + res.error.message, 'error'); if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete'; } return; }
+    showToast('Course deleted', 'info'); loadCourses();
+}
+async function editCourse(id) {
+    if (!isValidId(id)) return;
+    var res;
+    try { res = await sb.from('courses').select('*').eq('id', id).single(); }
+    catch(e) { showToast('Network error', 'error'); return; }
+    if (res.error || !res.data) { showToast('Course not found', 'error'); return; }
+    var c = res.data;
+    lessonCount = 0;
+    document.getElementById('courseId').value            = c.id;
+    document.getElementById('courseFormTitle').textContent = 'Edit Course';
+    document.getElementById('courseTitle').value         = c.title || '';
+    document.getElementById('courseCategory').value      = c.category || 'arduino';
+    document.getElementById('courseDesc').value          = c.description || '';
+    document.getElementById('courseLevel').value         = c.level || 'Beginner';
+    document.getElementById('courseThumbnail').value     = c.thumbnail || '';
+    document.getElementById('courseIsFree').checked      = !!c.is_free;
+    document.getElementById('coursePrice').value         = c.price || '299';
+    document.getElementById('coursePriceGroup').style.display = c.is_free ? 'none' : '';
+    previewImg('courseThumbnail', 'courseThumbnailPreview');
+    document.getElementById('courseVideosContainer').innerHTML = '';
+    document.getElementById('courseLessonsContainer').innerHTML = '';
+    loadVideosIntoContainer('courseVideosContainer', c.videos);
+    (c.lessons || []).sort(function (a, b) { return (a.order || 0) - (b.order || 0); }).forEach(function (l) { addCourseLesson(l); });
+    document.getElementById('courseForm').classList.add('open');
+    document.getElementById('courseForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SETTINGS
+// ════════════════════════════════════════════════════════════════════════════
+async function changePassword() {
+    var cur = document.getElementById('currentPwd').value;
+    var nw  = document.getElementById('newPwd').value;
+    var cnf = document.getElementById('confirmPwd').value;
+    var st  = document.getElementById('pwdStatus');
+    st.style.color = ''; st.textContent = '';
+    if (!cur || !nw || !cnf) { st.style.color = 'var(--red)'; st.textContent = '✗ All fields are required.'; return; }
+    if (nw.length < 8) { st.style.color = 'var(--red)'; st.textContent = '✗ New password must be at least 8 characters.'; return; }
+    if (nw !== cnf) { st.style.color = 'var(--red)'; st.textContent = '✗ Passwords do not match.'; return; }
+    st.style.color = 'var(--muted)'; st.textContent = 'Verifying…';
+    try {
+        var { data: userData } = await sb.auth.getUser();
+        if (!userData || !userData.user) { st.style.color = 'var(--red)'; st.textContent = '✗ Session expired. Log out and log in again.'; return; }
+        var reauth = await sb.auth.signInWithPassword({ email: userData.user.email, password: cur });
+        if (reauth.error) { st.style.color = 'var(--red)'; st.textContent = '✗ Current password is incorrect.'; return; }
+        var res = await sb.auth.updateUser({ password: nw });
+        if (res.error) { st.style.color = 'var(--red)'; st.textContent = '✗ Update failed: ' + res.error.message; return; }
+        st.style.color = 'var(--green)'; st.textContent = '✓ Password updated successfully!';
+        document.getElementById('currentPwd').value = '';
+        document.getElementById('newPwd').value = '';
+        document.getElementById('confirmPwd').value = '';
+        setTimeout(function () { st.textContent = ''; }, 4000);
+    } catch(e) {
+        st.style.color = 'var(--red)';
+        st.textContent = '✗ Network error. Please try again.';
+    }
+}
+
+// ─── TAB LAZY LOADING: merged into switchTab() above ───────────────────────
+
+document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});
+</script>
+</body>
+</html>
+
+
+
+

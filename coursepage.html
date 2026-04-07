@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2300E5FF'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='900' fill='%23000'%3EN%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src https://dqjzvembtenfhtgpttie.supabase.co wss://dqjzvembtenfhtgpttie.supabase.co; frame-src https://www.youtube.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'none';">
+<title>NEUBLOCK &bull; Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script>(function(){var t=localStorage.getItem('nb_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();
+const{createClient}=window.supabase;const sb=createClient('https://dqjzvembtenfhtgpttie.supabase.co','sb_publishable_LldCCFUKJShZ3ItHs5Uagw_yzIFflqd');</script>
+<style>
+:root{--bg:#050712;--surface:#0f1220;--card:#141a2a;--card2:#16212f;--border:rgba(34,150,206,0.4);--bdim:rgba(34,150,206,0.15);--cyan:#22d1ff;--blue:#4ea8ff;--green:#2dd5a6;--red:#f7768e;--gold:#fbbf24;--purple:#a78bfa;--text:#e5f1ff;--muted:#91a8c0;--r:16px;--t:all 0.22s ease;}
+[data-theme=light]{--bg:#f0f4ff;--surface:#e8eef8;--card:#ffffff;--card2:#f8fafc;--border:rgba(30,144,255,0.2);--bdim:rgba(30,144,255,0.08);--cyan:#0284c7;--blue:#2563eb;--green:#10b981;--red:#ef4444;--gold:#f59e0b;--purple:#7c3aed;--text:#0f172a;--muted:#64748b;}
+[data-theme=light] .glass-nav{background:rgba(8,12,20,0.95)!important;}[data-theme=light] footer{background:#101725;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:99px;}
+a,button,[role=button]{outline:none;user-select:none;text-decoration:none;}
+.glass-nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:.9rem 5%;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:all var(--t);border-bottom:1px solid transparent;}
+.glass-nav.stuck{background:rgba(10,10,10,.96);border-bottom-color:var(--border);padding:.65rem 5%;backdrop-filter:blur(14px);}
+.nav-logo{font-size:1.35rem;font-weight:800;color:var(--cyan);letter-spacing:-.02em;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}.nav-links a{color:var(--muted);font-size:.88rem;font-weight:600;transition:color var(--t);}.nav-links a:hover,.nav-links a[aria-current]{color:var(--cyan);}
+.nav-end{display:flex;align-items:center;gap:.5rem;}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(167,139,250,0.08),transparent);border:1.5px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem;transition:all var(--t);flex-shrink:0;}
+.icon-btn:hover{border-color:var(--purple);color:var(--purple);box-shadow:0 4px 12px rgba(167,139,250,0.2);}
+.hamburger{display:none;}
+@media(max-width:768px){.hamburger{display:flex;}.nav-links{display:none;flex-direction:column;gap:0;position:fixed;top:60px;left:0;right:0;background:rgba(8,10,20,.99);border-bottom:1px solid var(--border);padding:.5rem 0;z-index:997;}.nav-links.open{display:flex;}.nav-links li{padding:.8rem 5%;border-bottom:1px solid rgba(34,209,255,.07);}}
+.detail-wrap{max-width:860px;margin:0 auto;padding:6rem 5% 4rem;position:relative;z-index:1;}
+.back-link{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:2rem;color:var(--muted);border:1.5px solid var(--border);padding:.5rem 1.2rem;border-radius:99px;transition:all var(--t);font-size:.84rem;font-weight:600;}
+.back-link:hover{border-color:rgba(167,139,250,.6);color:var(--purple);background:rgba(167,139,250,.05);transform:translateX(-4px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hero-img-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:2rem;border:1.5px solid var(--border);background:var(--card);animation:fadeUp .5s ease both;}
+.hero-img-wrap img{width:100%;max-height:380px;object-fit:cover;display:block;transition:transform .4s ease;}
+.hero-img-wrap:hover img{transform:scale(1.02);}
+.detail-head{text-align:center;margin-bottom:2rem;padding:2rem;background:linear-gradient(135deg,var(--card),var(--card2));border:1.5px solid var(--border);border-radius:var(--r);animation:fadeUp .5s .05s ease both;}
+.detail-head h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;background:linear-gradient(135deg,var(--text),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.025em;margin-bottom:.8rem;}
+.meta-row{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.4rem;}
+.meta-tag{padding:.25rem .8rem;border-radius:99px;font-size:.72rem;font-weight:700;letter-spacing:.05em;}
+.cat-arduino{background:rgba(34,209,255,.12);color:var(--cyan);border:1px solid rgba(34,209,255,.25);}
+.cat-robotics{background:rgba(78,168,255,.12);color:var(--blue);border:1px solid rgba(78,168,255,.25);}
+.cat-ai{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
+.cat-python{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.25);}
+.free-badge{background:rgba(45,213,166,.15);color:var(--green);border:1px solid rgba(45,213,166,.3);}
+.paid-badge{background:rgba(251,191,36,.12);color:var(--gold);border:1px solid rgba(251,191,36,.25);}
+.dsec{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin:1.8rem 0 .8rem;display:flex;align-items:center;gap:.5rem;}
+.dsec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.desc-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1.5px solid var(--border);border-radius:var(--r);padding:1.4rem;color:var(--muted);font-size:.92rem;line-height:1.8;animation:fadeUp .5s .1s ease both;}
+/* LESSONS */
+.lessons-list{display:flex;flex-direction:column;gap:.6rem;animation:fadeUp .5s .14s ease both;}
+.lesson-item{background:linear-gradient(135deg,var(--card),var(--card2));border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:flex-start;gap:.9rem;transition:all var(--t);cursor:pointer;}
+.lesson-item:hover{border-color:rgba(167,139,250,.5);background:linear-gradient(135deg,rgba(167,139,250,.07),var(--card2));transform:translateX(4px);}
+.lesson-num{font-size:.75rem;font-weight:800;color:var(--purple);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.2);border-radius:99px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem;}
+.lesson-info{flex:1;}.lesson-title{font-size:.93rem;font-weight:700;color:var(--text);}.lesson-desc{font-size:.8rem;color:var(--muted);margin-top:.2rem;line-height:1.55;}
+.lesson-dur{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.25rem;margin-top:.3rem;font-weight:600;}
+/* VIDEO */
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border);}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.video-block{margin-bottom:1.2rem;}
+.video-meta{padding:.6rem 0;}.video-title{font-weight:700;font-size:.9rem;}.video-credits{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;margin-top:.2rem;}
+.not-found{text-align:center;padding:4rem 2rem;color:var(--muted);}
+.not-found i{font-size:3rem;display:block;margin-bottom:1rem;color:rgba(167,139,250,.2);}
+@keyframes spin{to{transform:rotate(360deg)}}.spin{animation:spin 1s linear infinite;}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:2.8rem 5% 1.5rem;position:relative;z-index:1;}
+.f-inner{max-width:1300px;margin:0 auto;}.f-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem;}
+@media(max-width:900px){.f-grid{grid-template-columns:1fr 1fr;}}@media(max-width:480px){.f-grid{grid-template-columns:1fr;}}
+.f-logo{font-size:1.3rem;font-weight:800;color:var(--cyan);letter-spacing:-.02em;margin-bottom:.6rem;}.f-desc{color:var(--muted);font-size:.84rem;line-height:1.7;max-width:240px;}
+.f-col h5{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text);margin-bottom:.9rem;}.f-col a{display:block;color:var(--muted);font-size:.84rem;margin-bottom:.42rem;transition:color var(--t);}.f-col a:hover{color:var(--cyan);}
+.f-bottom{border-top:1px solid var(--border);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}.f-bottom p{color:var(--muted);font-size:.79rem;}
+@keyframes toastIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<nav class="glass-nav" id="mainNav">
+    <a href="index.html" class="nav-logo">NEUBLOCK</a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="circuit.html">Circuits</a></li>
+        <li><a href="component.html">Components</a></li>
+        <li><a href="courses.html" aria-current="page">Courses</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-end">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
+        <button class="icon-btn hamburger" id="hamburger" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    </div>
+</nav>
+<div class="detail-wrap">
+    <a href="courses.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Courses</a>
+    <div id="content"><div style="text-align:center;padding:4rem;color:var(--muted);"><i class="fas fa-circle-notch spin" style="font-size:2rem;color:var(--purple);display:block;margin-bottom:1rem;"></i>Loading course…</div></div>
+</div>
+<footer>
+<div class="f-inner">
+    <div class="f-grid">
+        <div><div class="f-logo">NEUBLOCK</div><p class="f-desc">Open-source robotics studio — projects, circuits, components and free AI courses for makers worldwide.</p></div>
+        <div class="f-col"><h5>Resources</h5><a href="index.html#projects">Projects</a><a href="circuit.html">Circuits</a><a href="component.html">Components</a></div>
+        <div class="f-col"><h5>Learn</h5><a href="courses.html">All Courses</a><a href="courses.html">Arduino</a><a href="courses.html">Robotics</a><a href="courses.html">AI &amp; ML</a></div>
+        <div class="f-col"><h5>Connect</h5><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a><a href="index.html#contact">Contact</a></div>
+    </div>
+    <div class="f-bottom"><p>&copy; <span data-year></span> NEUBLOCK &bull; Robotics Studio</p><p>Made for the maker community &#10084;&#65039;</p></div>
+</div>
+</footer>
+<script src="bg-anim.js"></script>
+<script>
+function esc(u){if(u==null)return'';return String(u).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
+function safeUrl(u){if(!u)return'';try{var p=new URL(String(u).trim());return(p.protocol==='http:'||p.protocol==='https:')?p.href:'';}catch(e){return'';}}
+function isId(id){return typeof id==='string'&&/^[a-zA-Z0-9_-]{1,128}$/.test(id);}
+(function(){var t=localStorage.getItem('nb_theme')||'dark';document.documentElement.setAttribute('data-theme',t);var ic=document.getElementById('themeIcon');if(ic)ic.className=t==='dark'?'fas fa-moon':'fas fa-sun';})();
+document.getElementById('themeToggle').addEventListener('click',function(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('nb_theme',n);document.getElementById('themeIcon').className=n==='dark'?'fas fa-moon':'fas fa-sun';});
+window.addEventListener('scroll',function(){document.getElementById('mainNav').classList.toggle('stuck',window.scrollY>40);},{passive:true});
+document.getElementById('hamburger').addEventListener('click',function(){document.getElementById('navLinks').classList.toggle('open');});
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open');});});
+function videoSrc(url){if(!url)return'';var s=String(url).trim().replace('http://','https://');try{var u=new URL(s);if(u.hostname.includes('youtube.com')||u.hostname.includes('youtu.be')){var vid=u.searchParams.get('v')||'';if(!vid){if(u.pathname.includes('/embed/'))vid=(u.pathname.split('/embed/')[1]||'').split(/[/?]/)[0];else vid=u.pathname.split('/').filter(Boolean).pop()||'';}if(vid&&/^[a-zA-Z0-9_-]{5,20}$/.test(vid))return'https://www.youtube.com/embed/'+vid+'?rel=0&modestbranding=1';}if(u.hostname.includes('vimeo.com')){var id=u.pathname.split('/').filter(Boolean).pop();if(/^[0-9]+$/.test(id))return'https://player.vimeo.com/video/'+id;}if(s.includes('/embed/')||s.includes('player.'))return s;}catch(e){}return'';}
+function renderVideoList(vids){if(!Array.isArray(vids)||!vids.length)return'';return vids.map(function(v){var src=videoSrc(v.url||'');if(!src)return'';return'<div class="video-block"><div class="video-wrap"><iframe src="'+esc(src)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" title="'+esc(v.title||'Video')+'"></iframe></div>'+(v.title?'<div class="video-meta"><div class="video-title">'+esc(v.title)+'</div>'+(v.credits?'<div class="video-credits"><i class="fas fa-user-circle"></i>'+esc(v.credits)+'</div>':'')+'</div>':'')+'</div>';}).filter(Boolean).join('');}
+async function load(){
+    var k=new URLSearchParams(location.search).get('id');
+    var el=document.getElementById('content');
+    if(!k||!isId(k)){el.innerHTML='<div class="not-found"><i class="fas fa-exclamation-circle"></i>Invalid course ID.<br><a href="courses.html" class="back-link" style="display:inline-flex;margin-top:1rem;">← Back to Courses</a></div>';return;}
+    try{
+        var res=await sb.from('courses').select('id,title,description,category,level,is_free,price,thumbnail,lessons,videos').eq('id',k).single();
+        if(res.error||!res.data){el.innerHTML='<div class="not-found"><i class="fas fa-graduation-cap"></i>Course not found.<br><a href="courses.html" class="back-link" style="display:inline-flex;margin-top:1rem;">← Back to Courses</a></div>';return;}
+        var c=res.data;
+        document.title='NEUBLOCK \u2022 '+esc(c.title);
+        var title=esc(c.title||'Untitled'),desc=esc(c.description||'').replace(/\n/g,'<br>');
+        var cat=esc(c.category||'arduino'),level=esc(c.level||'Beginner');
+        var thumb=safeUrl(c.thumbnail||'');
+        var lessons=Array.isArray(c.lessons)?c.lessons:[];
+        var vids=Array.isArray(c.videos)?c.videos:[];
+        var badge=c.is_free?'<span class="meta-tag free-badge"><i class="fas fa-gift"></i> FREE</span>':'<span class="meta-tag paid-badge">&#x20b9;'+esc(String(c.price||'299'))+'</span>';
+        var heroHtml=thumb?'<div class="hero-img-wrap"><img src="'+esc(thumb)+'" alt="'+title+'" loading="eager" onerror="this.parentElement.innerHTML=\'\'"></div>':'';
+        var lessonsHtml=lessons.length?'<div class="dsec"><i class="fas fa-list-ul"></i> Lessons ('+lessons.length+')</div><div class="lessons-list">'+lessons.map(function(l,i){var lt=esc(l.title||'Lesson '+(i+1)),ld=esc(l.description||'');var dur=l.duration?'<span class="lesson-dur"><i class="fas fa-clock"></i>'+esc(l.duration)+'</span>':'';var vsrc=videoSrc(l.video||'');return'<div class="lesson-item"'+(vsrc?' onclick="playLesson(\''+esc(vsrc)+'\',\''+lt+'\')"':'')+'>'+'<div class="lesson-num">'+(i+1)+'</div><div class="lesson-info"><div class="lesson-title">'+lt+'</div>'+(ld?'<div class="lesson-desc">'+ld+'</div>':'')+dur+'</div>'+(vsrc?'<i class="fas fa-play-circle" style="color:var(--purple);font-size:1.2rem;margin-top:.1rem;flex-shrink:0;"></i>':'')+'</div>';}).join('')+'</div>':'';
+        var vidsHtml=renderVideoList(vids);
+        var vidsSection=vidsHtml?'<div class="dsec"><i class="fas fa-video"></i> Course Videos</div>'+vidsHtml:'';
+        el.innerHTML=heroHtml+
+            '<div class="detail-head"><h1>'+title+'</h1><div class="meta-row">'+badge+'<span class="meta-tag cat-'+esc(c.category||'arduino')+'">'+cat.toUpperCase()+'</span><span class="meta-tag" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);">'+level+'</span><span class="meta-tag" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);"><i class="fas fa-list-ul"></i> '+lessons.length+' Lessons</span></div></div>'+
+            '<div class="dsec"><i class="fas fa-align-left"></i> About this Course</div><div class="desc-card">'+(desc||'No description provided.')+'</div>'+
+            lessonsHtml+vidsSection;
+    }catch(err){
+        el.innerHTML='<div class="not-found"><i class="fas fa-exclamation-circle"></i>Failed to load course.<br><button onclick="load()" style="background:var(--purple);color:#fff;border:none;border-radius:99px;padding:.4rem 1rem;font-weight:700;cursor:pointer;margin-top:1rem;display:inline-block;">Retry</button></div>';
+    }
+}
+var playerEl=null;
+function playLesson(src,title){
+    if(!playerEl){playerEl=document.createElement('div');playerEl.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:1rem;';playerEl.innerHTML='<div style="width:100%;max-width:860px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;"><span style="color:#fff;font-weight:700;font-size:.9rem;" id="playerTitle"></span><button onclick="closePlayer()" style="background:rgba(255,255,255,.1);border:none;color:#fff;padding:.35rem .9rem;border-radius:99px;cursor:pointer;font-weight:600;">✕ Close</button></div><div style="position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;"><iframe id="playerFrame" style="position:absolute;inset:0;width:100%;height:100%;border:none;" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"></iframe></div></div>';playerEl.addEventListener('click',function(e){if(e.target===playerEl)closePlayer();});document.body.appendChild(playerEl);}
+    document.getElementById('playerFrame').src=src;document.getElementById('playerTitle').textContent=title||'';playerEl.style.display='flex';
+}
+function closePlayer(){if(playerEl){document.getElementById('playerFrame').src='';playerEl.style.display='none';}}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePlayer();});
+load();
+document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});
+</script>
+</body>
+</html>
